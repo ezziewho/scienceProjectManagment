@@ -12,22 +12,26 @@ function Login() {
 
     const [errors, setErrors] = useState({})
     const handleInput = (event) =>{
-        setValues(prev => ({...prev, [event.target.name]: [event.target.value]}))
+        setValues(prev => ({...prev, [event.target.name]: event.target.value}))
     }
     const handleSubmit=(event)=>{
         event.preventDefault();
         setErrors(Validation(values));
         if(errors.email === "" && errors.password === ""){
+            console.log("Sending login data:", values);
             axios.post('http://localhost:8081/login', values)
             .then(res => {
-                if(res.data === "Success") {
-                navigate('/home');
+                console.log(res.data)
+                if(res.data.Login) {
+                    localStorage.setItem("token", res.data.token)
+                    navigate('/home');
                 }
                 else if(res.data === "Failure") {
                     alert("chujj");
                     }
                 else{
                     alert("No record existed");
+                    
                 }
             })
             .catch(err => console.log(err));
@@ -54,9 +58,10 @@ function Login() {
                     </div>
                     <button type='submit' className='btn btn-success w-100'>Log in</button>
                     <p> </p>
-                    <Link to='/forgotPassword' className='btn btn-default border w-100 bg-light text-decoration-none'>Forgot Password?</Link>
+                    <Link to='/signup' className='btn btn-default border w-100 bg-light text-decoration-none'>Register</Link>
+                    <p> </p>
+                    <Link to='/forgotPassword' className='w-100 text-decoration-underline text-primary'> Forgot Password?</Link>
                     
-                    <p>Super elcia </p>
                     
                 </form>
             </div>
