@@ -1,0 +1,18 @@
+.card-header {
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  
+  .card-body {
+    overflow-y: auto;
+    max-height: 400px;
+  }
+  
+  .card {
+    cursor: grab;
+  }
+  
+  .card:active {
+    cursor: grabbing;
+  }
+  

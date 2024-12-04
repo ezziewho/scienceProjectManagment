@@ -31,14 +31,21 @@ export const login = (req, res) => {
             return res.status(500).json("Error querying user");
         }
         if (data.length > 0) {
+            const user = data[0];
+            console.log(data);
             bcrypt.compare(req.body.password.toString(), data[0].password, (err, response) => {
                 if (err) {
                     console.error("Bcrypt comparison error:", err);
                     return res.status(500).json("Error comparing passwords");
                 }
                 if (response) {
-                    req.session.role = data[0].role;
-                    return res.json({ Login: true });
+                    req.session.userId = user.id; // Set userId in session
+                    req.session.role = user.role || "user"; // Set role in session
+                    //req.session.role = data[0].role;
+                    console.log("Session data after login:", req.session);
+                    
+                    return res.json({ Login: true});
+    
                 }
                 return res.status(401).json({ Login: false });
             });

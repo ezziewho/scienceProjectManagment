@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
-import Validation from '../components/SignupValidation'
+import Validation from '../components/forms/SignupValidation'
 
 function Signup() {
     const [values, setValues] = useState({

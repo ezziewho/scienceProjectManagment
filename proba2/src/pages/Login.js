@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Validation from '../components/LoginValidation';
+import Validation from '../components/forms/LoginValidation';
 
 function Login() {
     const [values, setValues] = useState({ email: "", password: "" });
@@ -14,7 +14,7 @@ function Login() {
         axios.get('http://localhost:8081/user/checkauth')
             .then(res => {
                 if (res.data.valid) {
-                    navigate('/home');
+                    navigate('/');
                 }
             })
             .catch(err => console.error("Authentication check failed:", err));
@@ -34,7 +34,7 @@ function Login() {
             axios.post('http://localhost:8081/auth/login', values)
                 .then(res => {
                     if (res.data.Login) {
-                        navigate('/home');
+                        navigate('/');
                     } else if (res.data === "Failure") {
                         setServerError("Invalid email or password.");
                     } else {

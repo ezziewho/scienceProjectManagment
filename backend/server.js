@@ -107,6 +107,7 @@ import bodyParser from "body-parser";
 import sessionConfig from "./config/session.js";
 import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
+import kanbanRoutes from "./routes/kanban.js";
 
 const app = express();
 
@@ -125,6 +126,9 @@ app.use(session(sessionConfig));
 // Routes
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
+app.use("/kanban", kanbanRoutes);
+
+console.log("Auth routes registered under /auth");
 
 // Start server
 app.listen(8081, () => {
