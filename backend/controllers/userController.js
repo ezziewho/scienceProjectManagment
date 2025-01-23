@@ -1,5 +1,5 @@
 export const checkAuth = (req, res) => {
-    console.log("CHUJEK Session data:", req.session); // Debug session data
+    //console.log("CHUJEK Session data:", req.session); // Debug session data
     if (req.session.userId) {
         // User is logged in, return role and userId
         return res.json({

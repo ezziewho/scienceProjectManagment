@@ -1,4 +1,4 @@
-import db from "../db.js";
+/*import db from "../config/db.js";
 
 
 // Get all tasks for the logged-in user
@@ -55,4 +55,176 @@ export const deleteTask = (req, res) => {
         }
         res.json({ id });
     });
+};
+*/
+import { Task, TaskUser, User } from "../models/index.js"; // Importuj modele zdefiniowane w Sequelize
+
+
+export const getTasks = async (req, res) => {
+    try {
+        console.log("Session data:", req.session); // Log sesji
+        const userId = req.session.userId; // Pobranie userId z sesji
+
+        if (!userId) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+
+        // Pobierz zadania powiązane z zalogowanym użytkownikiem
+        const tasks = await Task.findAll({
+            include: [
+                {
+                    model: User,
+                    attributes: ["id", "name"], // Pobierz ID i nazwę użytkownika
+                    through: { attributes: [] } // Pomijamy dodatkowe dane z tabeli pośredniej
+                }
+            ]
+        });
+
+        // Filtrowanie zadań, aby zachować tylko te, które dotyczą zalogowanego użytkownika
+        const userTasks = tasks.filter((task) =>
+            task.Users.some((user) => user.id === userId)
+        );
+
+        // Formatowanie danych
+        const formattedTasks = userTasks.map((task) => ({
+            id: task.id,
+            title: task.title,
+            description: task.description,
+            stage: task.stage,
+            dueDate: task.dueDate,
+            usersResponsible: task.Users.map((user) => user.name).join(", "),
+        }));
+
+        res.json(formattedTasks);
+    } catch (error) {
+        console.error("Error fetching tasks:", error);
+        res.status(500).json({ error: "Error fetching tasks" });
+    }
+};
+
+
+
+
+// Utwórz nowe zadanie
+/*
+export const createTask = async (req, res) => {
+    try {
+        console.log("Session data:", req.session); // Log sesji
+        const { title, description, stage } = req.body;
+        const userId = req.session.userId;
+
+        if (!userId) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+
+        // Tworzenie zadania
+        const task = await Task.create({
+            title,
+            description,
+            stage
+        });
+
+        // Powiązanie zadania z użytkownikiem w tabeli `task_users`
+        await TaskUser.create({
+            task_id: task.id,
+            user_id: userId
+        });
+
+        res.json(task);
+    } catch (error) {
+        console.error("Error creating task:", error);
+        res.status(500).json({ error: "Error creating task" });
+    }
+};
+*/
+export const createTask = async (req, res) => {
+    try {
+        console.log("Session data:", req.session); // Log sesji
+        const { title, description, stage, dueDate } = req.body; // Zakładam, że nowo utworzone zadanie ma `dueDate`
+        const userId = req.session.userId;
+
+        if (!userId) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+
+        // Tworzenie zadania
+        const task = await Task.create({
+            title,
+            description,
+            stage,
+            dueDate,
+        });
+
+        // Powiązanie zadania z użytkownikiem w tabeli `task_users`
+        await TaskUser.create({
+            task_id: task.id,
+            user_id: userId,
+        });
+
+        // Pobranie zadania z użytkownikami odpowiedzialnymi
+        const createdTask = await Task.findOne({
+            where: { id: task.id },
+            include: [
+                {
+                    model: User,
+                    attributes: ["name"],
+                    through: { attributes: [] }
+                }
+            ]
+        });
+
+        res.json({
+            id: createdTask.id,
+            title: createdTask.title,
+            description: createdTask.description,
+            stage: createdTask.stage,
+            dueDate: createdTask.dueDate,
+            usersResponsible: createdTask.Users.map((user) => user.name).join(", "),
+        });
+    } catch (error) {
+        console.error("Error creating task:", error);
+        res.status(500).json({ error: "Error creating task" });
+    }
+};
+
+// Zaktualizuj zadanie
+export const updateTask = async (req, res) => {
+    try {
+        const { title, description, stage } = req.body;
+        const { id } = req.params;
+
+        // Aktualizacja zadania
+        const [updatedRows] = await Task.update(
+            { title, description, stage },
+            { where: { id } }
+        );
+
+        if (updatedRows === 0) {
+            return res.status(404).json({ error: "Task not found" });
+        }
+
+        res.json({ id, title, description, stage });
+    } catch (error) {
+        console.error("Error updating task:", error);
+        res.status(500).json({ error: "Error updating task" });
+    }
+};
+
+// Usuń zadanie
+export const deleteTask = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        // Usunięcie zadania
+        const deletedRows = await Task.destroy({ where: { id } });
+
+        if (deletedRows === 0) {
+            return res.status(404).json({ error: "Task not found" });
+        }
+
+        res.json({ id });
+    } catch (error) {
+        console.error("Error deleting task:", error);
+        res.status(500).json({ error: "Error deleting task" });
+    }
 };

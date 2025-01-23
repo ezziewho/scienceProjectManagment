@@ -1,0 +1,48 @@
+/* Główna kolumna */
+.task-column {
+    background: #f3f4f6; /* Delikatne, neutralne tło */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    width: 300px; /* Stała szerokość */
+    min-height: 500px; /* Minimalna wysokość */
+    transition: box-shadow 0.2s ease;
+}
+
+.task-column:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Zwiększony cień na hover */
+}
+
+/* Nagłówek kolumny */
+.task-column-header {
+    background: #3b3f4a; /* Ciemniejsze, neutralne kolory pasujące do nagłówka */
+    color: #ffffff; /* Biały tekst */
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px 6px 0 0; /* Zaokrąglone rogi na górze */
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    font-size: 1.25rem;
+}
+
+/* Ciało kolumny */
+.task-column-body {
+    background: #ffffff; /* Czyste, białe tło */
+    padding: 10px;
+    border-radius: 0 0 6px 6px; /* Zaokrąglone rogi na dole */
+    flex-grow: 1;
+    overflow-y: auto; /* Scroll w przypadku dużej liczby kart */
+}
+
+/* Styl dla pustej kolumny */
+.no-tasks {
+    color: #6c757d; /* Delikatny szary tekst */
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    font-style: italic;
+}

@@ -1,0 +1,94 @@
+/* General navbar styling */
+.custom-navbar {
+    background-color: #343a40; /* Dark gray background */
+    padding: 1rem;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.custom-brand {
+    font-family: "Poppins", sans-serif;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #f8f9fa; /* Light text */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s ease-in-out;
+}
+
+.custom-brand:hover {
+    color: #ffc107; /* Gold on hover */
+    text-decoration: none;
+}
+
+/* Navbar link styling */
+.custom-link {
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #f8f9fa;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+}
+
+.custom-link:hover {
+    background-color: #ffc107; /* Gold background on hover */
+    color: #f8f9fa; /* Dark text */
+    text-decoration: none;
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+/* Responsive adjustments */
+.navbar-toggler {
+    border: none;
+    outline: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%288, 8, 8, 0.8%29' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    width: 24px;
+    height: 24px;
+}
+
+/* Active link styling */
+.custom-link.active {
+    background-color: #ffc107;
+    color: #f8f9fa;
+}
+
+/* General navbar link styles */
+.navbar-nav .nav-link {
+    color: #f8f9fa !important; /* Force text to be white */
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar-nav .nav-link:hover {
+    background-color: #ffc107; /* Gold background on hover */
+    color: #f8f9fa !important; /* Keep text white */
+    transform: scale(1.05);
+}
+
+/* For active links */
+.navbar-nav .nav-link.active {
+    background-color: #ffc107; /* Gold background for active links */
+    color: #f8f9fa !important; /* Keep text white */
+}
+
+/* Navbar brand (SCIMAN) styles */
+.navbar-brand {
+    color: #f8f9fa !important; /* Force brand text to be white */
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.navbar-brand:hover {
+    color: #ffc107 !important; /* Gold color on hover */
+    text-decoration: none;
+}

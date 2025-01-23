@@ -1,0 +1,90 @@
+/* Główna karta */
+.task-card {
+    background: #fff; /* Białe tło */
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, transform 0.2s ease, background-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    color: #333; /* Czarne napisy */
+}
+
+.task-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px); /* Efekt unoszenia */
+}
+
+/* Rozwinięta karta */
+.task-card.expanded {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Karta z upłyniętym terminem */
+.task-card.overdue {
+    background-color: #ffe6e6; /* Jasnoczerwone tło */
+}
+
+/* Nagłówek */
+.task-card-header {
+    display: flex;
+    justify-content: center; /* Tytuł na środku */
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.task-card-title {
+    font-family: "Poppins", sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+    color: #333; /* Czarne napisy */
+    text-align: center; /* Wyrównanie do środka */
+}
+
+/* Dolna sekcja */
+.task-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 0.75rem; /* Mniejsza czcionka */
+    color: #6c757d; /* Delikatnie szary kolor */
+}
+
+/* Data w lewym dolnym rogu */
+.task-card-due {
+    font-size: 0.75rem; /* Mniejsza czcionka */
+    font-weight: bold;
+    color: #6c757d; /* Delikatny szary */
+}
+
+/* Użytkownicy po prawej stronie */
+.task-card-users {
+    display: flex;
+    flex-direction: column; /* Ustawienie nazwiska jedno pod drugim */
+    gap: 1px;
+}
+
+.task-card-user {
+    font-size: 0.65rem; /* Mniejsza czcionka */
+    color: #6c757d;
+}
+
+/* Ikona rozwijania */
+.task-card-toggle {
+    font-size: 1.25rem;
+    color: #6c757d;
+    cursor: pointer;
+    margin-left: auto; /* Wyrównanie ikony do prawej */
+}
+
+/* Opis */
+.task-card-description {
+    margin-top: 15px;
+    font-size: 0.875rem;
+    color: #495057;
+    line-height: 1.5;
+}

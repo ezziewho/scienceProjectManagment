@@ -1,25 +1,3 @@
-// db.js
-/*import mysql from 'mysql';
-
-// Create and export the database connection
-const db = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "projectsmanager"
-});
-
-db.connect(err => {
-    if (err) {
-        console.error("Database connection failed:", err);
-        return;
-    }
-    console.log("Database connected successfully");
-});
-// Export the connection object
-export default db;
-*/
-
 import mysql from 'mysql';
 
 // Define database configuration

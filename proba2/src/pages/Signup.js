@@ -1,4 +1,92 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react';
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
+import Validation from '../components/forms/SignupValidation';
+import '../css/Signup.css'; // Import the custom CSS
+
+function Signup() {
+    const [values, setValues] = useState({
+        name: '',
+        email: '',
+        password: ''
+    });
+
+    const navigate = useNavigate();
+    const [errors, setErrors] = useState({});
+
+    const handleInput = (event) => {
+        setValues((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setErrors(Validation(values));
+        if (errors.name === '' && errors.email === '' && errors.password === '') {
+            axios
+                .post('http://localhost:8081/auth/signup', values)
+                .then((res) => {
+                    navigate('/login');
+                })
+                .catch((err) => console.log(err));
+        }
+    };
+
+    return (
+        <div className="signup-background">
+            <div className="signup-container">
+                <div className="signup-card">
+                    <h2 className="text-center">Sign Up</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-3">
+                            <label htmlFor="name">Name</label>
+                            <input
+                                type="text"
+                                placeholder="Enter Name"
+                                name="name"
+                                onChange={handleInput}
+                                className="form-control"
+                            />
+                            {errors.name && <span className="text-danger">{errors.name}</span>}
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="email">Email</label>
+                            <input
+                                type="email"
+                                placeholder="Enter Email"
+                                name="email"
+                                onChange={handleInput}
+                                className="form-control"
+                            />
+                            {errors.email && <span className="text-danger">{errors.email}</span>}
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="password">Password</label>
+                            <input
+                                type="password"
+                                placeholder="Enter Password"
+                                name="password"
+                                onChange={handleInput}
+                                className="form-control"
+                            />
+                            {errors.password && <span className="text-danger">{errors.password}</span>}
+                        </div>
+                        <button type="submit" className="btn btn-primary w-100">
+                            Sign Up
+                        </button>
+                        <p></p>
+                        <Link to="/login" className="btn btn-outline-light w-100 text-decoration-none">
+                            Log In
+                        </Link>
+                    </form>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export default Signup;
+
+/*import React, {useState} from 'react'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import Validation from '../components/forms/SignupValidation'
@@ -9,12 +97,14 @@ function Signup() {
         email: '',
         password: ''
     })
+    
     const navigate = useNavigate();
 
     const [errors, setErrors] = useState({})
+ 
     const handleInput = (event) => {
-        setValues(prev => ({...prev, [event.target.name]: [event.target.value]}))
-    }
+        setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
+    };
     const handleSubmit=(event)=>{
         event.preventDefault();
         setErrors(Validation(values));
@@ -62,4 +152,4 @@ function Signup() {
 )
 }
 
-export default Signup
+export default Signup*/
