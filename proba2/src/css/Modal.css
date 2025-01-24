@@ -1,0 +1,120 @@
+/* AddUserModal.css */
+
+/* Modal overlay background */
+.modal-overlay {
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1050; /* Above normal content */
+}
+
+/* Modal dialog box */
+.modal-dialog {
+    background: #ffffff !important; /* Solid white background */
+    border-radius: 10px !important;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important; /* Subtle shadow */
+    width: 100%;
+    max-width: 500px; /* Limit the size of the modal */
+    overflow: hidden;
+}
+
+/* Modal header */
+.modal-header {
+    background: #f8f9fa !important; /* Light gray header background */
+    border-bottom: 1px solid #e9ecef !important;
+    padding: 15px 20px !important;
+}
+
+.modal-title {
+    font-family: "Poppins", sans-serif !important;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    color: #343a40 !important; /* Dark gray text */
+    margin: 0 !important;
+}
+
+.btn-close {
+    color: #6c757d !important;
+}
+
+/* Modal body */
+.modal-body {
+    padding: 20px !important;
+    font-family: "Poppins", sans-serif !important;
+    color: #343a40 !important; /* Standard black text */
+}
+
+/* Form inputs */
+.form-control {
+    background: #f1f1f1 !important; /* Light gray input background */
+    border: none !important;
+    padding: 10px !important;
+    border-radius: 5px !important;
+    font-family: "Poppins", sans-serif !important;
+    font-size: 14px !important;
+    margin-bottom: 10px !important;
+}
+
+.form-control:focus {
+    outline: none !important;
+    box-shadow: 0 0 8px rgba(52, 58, 64, 0.8) !important; /* Subtle dark effect */
+    border: 1px solid #495057 !important; /* Focus border */
+}
+
+/* Buttons */
+.modal-footer .btn {
+    padding: 10px 20px !important;
+    font-family: "Poppins", sans-serif !important;
+    font-weight: bold !important;
+    border-radius: 5px !important;
+}
+
+.btn-primary {
+    background-color: #ffc107 !important; /* Golden button */
+    color: #ffffff !important;
+    border: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-primary:hover {
+    background-color: #e0a800 !important; /* Slightly darker gold */
+    color: #ffffff !important;
+}
+
+.btn-secondary {
+    background-color: #6c757d !important; /* Secondary gray */
+    color: #ffffff !important;
+    border: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268 !important; /* Slightly darker gray */
+    color: #ffffff !important;
+}
+
+/* Modal footer */
+.modal-footer {
+    background: #f8f9fa !important;
+    border-top: 1px solid #e9ecef !important;
+    padding: 15px 20px !important;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn-primary {
+    background-color: #ffc107 !important;
+    color: #343a40;
+    border: none;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 10px;
+    transition: all 0.3s ease;
+}

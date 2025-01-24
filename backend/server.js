@@ -46,6 +46,7 @@ import authRoutes from "./routes/auth.js";
 import userRoutes from "./routes/user.js";
 import kanbanRoutes from "./routes/kanban.js";
 import { sequelize } from "./models/index.js"; // Import Sequelize setup
+import "dotenv/config"; // This automatically runs dotenv's config method
 
 const app = express();
 

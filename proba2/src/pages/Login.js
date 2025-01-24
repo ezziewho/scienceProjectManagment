@@ -36,6 +36,7 @@ function Login() {
                 .then(res => {
                     if (res.data.Login) {
                         navigate('/');
+                        window.location.reload();
                     } else if (res.data === "Failure") {
                         setServerError("Invalid email or password.");
                     } else {

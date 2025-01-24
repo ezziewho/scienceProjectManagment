@@ -38,7 +38,6 @@ const KanbanBoard = () => {
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <div className="kanban-board">
-                <h1 className="kanban-title">Kanban Board</h1>
                 <div className="kanban-columns">
                     {stages.map((stage, index) => (
                         <TaskColumn

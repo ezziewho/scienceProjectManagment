@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../../css/TaskCard.css";
 
-function TaskCard({ task }) {
+function TaskCard({ task, isDone }) {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const handleDragStart = (event) => {
@@ -12,40 +12,41 @@ function TaskCard({ task }) {
         setIsExpanded((prev) => !prev);
     };
 
-    // Formatowanie daty w stylu DD/MM/YYYY
     const formatDate = (dateString) => {
         if (!dateString) return "No due date";
         const options = { day: "2-digit", month: "2-digit", year: "numeric" };
         return new Intl.DateTimeFormat("en-GB", options).format(new Date(dateString));
     };
 
-    const isOverdue = task.dueDate && new Date(task.dueDate) < new Date();
+    // If the task is in the "Done" column, it should always appear green.
+    // Otherwise, determine if it's overdue.
+    const taskClass = isDone
+        ? "done-task"
+        : task.dueDate && new Date(task.dueDate) < new Date()
+        ? "overdue-task"
+        : "";
 
     return (
         <div
-            className={`task-card ${isExpanded ? "expanded" : ""} ${
-                isOverdue ? "overdue" : ""
-            }`}
+            className={`task-card ${taskClass} ${isExpanded ? "expanded" : ""}`}
             draggable
             onDragStart={handleDragStart}
             onClick={toggleExpand}
         >
-            {/* Nagłówek z tytułem */}
+            {/* Header with the task title */}
             <div className="task-card-header">
                 <h5 className="task-card-title">{task.title}</h5>
             </div>
 
-            {/* Informacje o zadaniu */}
+            {/* Task information */}
             <div className="task-card-info">
-                <span className={`task-card-due ${isOverdue ? "overdue-badge" : ""}`}>
-                    Due: {formatDate(task.dueDate)}
-                </span>
+                <span className="task-card-due">Due: {formatDate(task.dueDate)}</span>
                 <div className="task-card-users">
                     {task.usersResponsible || "No users assigned"}
                 </div>
             </div>
 
-            {/* Rozwinięty opis */}
+            {/* Task description (visible only when expanded) */}
             {isExpanded && (
                 <div className="task-card-description">
                     <p>{task.description || "No description available."}</p>

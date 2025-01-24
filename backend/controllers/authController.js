@@ -1,8 +1,11 @@
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 import db from "../config/db.js";
+import nodemailer from "nodemailer";
 import { User } from "../models/index.js"; // Importuj model User
 //import { User } from "../models/User.js"; // Zakładam, że model Sequelize znajduje się w models/User.js
-
+import "dotenv/config"; // This automatically runs dotenv's config method
+import { sendEmail } from '../utils/email.js';
 const salt = 10;
 
 /*
@@ -25,7 +28,7 @@ export const signup = (req, res) => {
         });
     });
 };*/
-
+/*
 export const signup = async (req, res) => {
     try {
         // Pobranie hasła i innych danych z żądania
@@ -54,7 +57,66 @@ export const signup = async (req, res) => {
         console.error("Error in signup:", error);
         return res.status(500).json({ error: "Error signing up user" });
     }
+};*/
+export const signup = async (req, res) => {
+    try {
+        const { name, email, password, role } = req.body;
+
+        // Check if the user already exists
+        const existingUser = await User.findOne({ where: { email } });
+        if (existingUser) {
+            return res.status(400).json({ error: "User already exists" });
+        }
+
+        // Generate a random password if not provided (for admin-initiated creation)
+        const tempPassword = password || crypto.randomBytes(8).toString("hex");
+
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(tempPassword, salt);
+
+        // Create the user in the database
+        const newUser = await User.create({
+            name,
+            email,
+            password: hashedPassword,
+            role: role || "user", // Default role to "user" if not provided
+        });
+
+        // Send the temporary password to the user's email if it was auto-generated
+        /*
+        if (!password) {
+            const transporter = nodemailer.createTransport({
+                service: "gmail", // Use your preferred email service
+                auth: {
+                    user: process.env.EMAIL_USER,
+                    pass: process.env.EMAIL_PASS,
+                },
+            });
+
+            const mailOptions = {
+                from: process.env.EMAIL_USER,
+                to: email,
+                subject: "Your New Account Password",
+                text: `Hello ${name},\n\nYour SCIMAN account has been created successfully. Here is your temporary password:\n\n${tempPassword}\n\nPlease log in and change your password as soon as possible.\n\nThank you!`,
+            };
+
+            await transporter.sendMail(mailOptions);
+        }
+*/      if (!password) {
+    await sendEmail(
+        email,
+        'Your New Account Password',
+        `Hello ${name},\n\nYour SCIMAN account has been created successfully. Here is your temporary password:\n\n${tempPassword}\n\nPlease log in and change your password as soon as possible.\n\nThank you!`
+    );
+}
+        // Return success response
+        return res.status(201).json({ success: true, user: newUser });
+    } catch (error) {
+        console.error("Error in signup:", error);
+        return res.status(500).json({ error: "Error signing up user" });
+    }
 };
+
 
 /*
 hihi
