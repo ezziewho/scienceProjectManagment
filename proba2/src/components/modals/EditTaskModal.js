@@ -4,17 +4,17 @@ import { IconPlus, IconTrash } from "@tabler/icons-react";
 
 import "../../css/Modal.css";
 
-function AddTaskModal({ onClose, onSave }) {
+function EditTaskModal({ task, onClose, onUpdate }) {
     const [formData, setFormData] = useState({
-        title: "",
-        description: "",
-        stage: "", // Domyślnie pusty, zostanie ustawiony po pobraniu etapów
-        dueDate: "",
-        assignedUsers: [],
+        title: task.title || "",
+        description: task.description || "",
+        stage: task.stage || "",
+        dueDate: task.dueDate ? new Date(task.dueDate).toISOString().split("T")[0] : "", // Formatowanie daty
+        assignedUsers: task.assignedUsers || [], // Lista przypisanych użytkowników
     });
 
-    const [users, setUsers] = useState([]);
-    const [stages, setStages] = useState([]); // Stan przechowujący etapy
+    const [users, setUsers] = useState([]); // Wszystkich dostępnych użytkowników
+    const [stages, setStages] = useState([]); // Etapy zadania
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -27,13 +27,9 @@ function AddTaskModal({ onClose, onSave }) {
                     axios.get("http://localhost:8081/kanban/tasks/stages"),
                 ]);
 
-                setUsers(usersResponse.data); // Zapisanie użytkowników
-                setStages(stagesResponse.data); // Zapisanie etapów
-                setFormData((prev) => ({
-                    ...prev,
-                    stage: stagesResponse.data[0], // Ustawienie domyślnej wartości dla `stage`
-                }));
-                setLoading(false); // Zakończenie ładowania
+                setUsers(usersResponse.data);
+                setStages(stagesResponse.data);
+                setLoading(false);
             } catch (err) {
                 setError("Failed to load data.");
                 console.error(err);
@@ -75,12 +71,15 @@ function AddTaskModal({ onClose, onSave }) {
         e.preventDefault();
 
         try {
-            const response = await axios.post("http://localhost:8081/kanban/tasks", formData);
-            onSave(response.data);
-            console.log("Task added successfully:", response.data);
-            onClose();
+            const response = await axios.put(
+                `http://localhost:8081/kanban/tasks/${task.id}`,
+                formData
+            );
+            onUpdate(response.data); // Zaktualizuj dane w głównym komponencie
+            console.log("Task updated successfully:", response.data);
+            onClose(); // Zamknij modal
         } catch (error) {
-            console.error("Error adding task:", error);
+            console.error("Error updating task:", error);
         }
     };
 
@@ -101,7 +100,7 @@ function AddTaskModal({ onClose, onSave }) {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Add New Task</h5>
+                        <h5 className="modal-title">Edit Task</h5>
                         <button
                             type="button"
                             className="btn-close"
@@ -187,7 +186,9 @@ function AddTaskModal({ onClose, onSave }) {
                                         <li
                                             key={user.id}
                                             className={`list-group-item d-flex justify-content-between align-items-center ${
-                                                formData.assignedUsers.includes(user.name) ? "bg-success text-white" : ""
+                                                formData.assignedUsers.includes(user.name)
+                                                    ? "bg-success text-white"
+                                                    : ""
                                             }`}
                                         >
                                             {user.name}
@@ -220,7 +221,7 @@ function AddTaskModal({ onClose, onSave }) {
                                     Cancel
                                 </button>
                                 <button type="submit" className="btn btn-primary">
-                                    Add Task
+                                    Update Task
                                 </button>
                             </div>
                         </form>
@@ -231,4 +232,4 @@ function AddTaskModal({ onClose, onSave }) {
     );
 }
 
-export default AddTaskModal;
+export default EditTaskModal;

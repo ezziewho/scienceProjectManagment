@@ -1,4 +1,5 @@
 import React from "react";
+import '../../css/Modal.css'; // Import nowego pliku CSS
 
 function ConfirmDeleteModal({ user, onClose, onDelete }) {
     return (
@@ -10,7 +11,7 @@ function ConfirmDeleteModal({ user, onClose, onDelete }) {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Potwierdź usunięcie</h5>
+                        <h5 className="modal-title">Delete User</h5>
                         <button
                             type="button"
                             className="btn-close"
@@ -19,22 +20,23 @@ function ConfirmDeleteModal({ user, onClose, onDelete }) {
                         ></button>
                     </div>
                     <div className="modal-body">
-                        <p>Czy na pewno chcesz usunąć użytkownika <strong>{user.name}</strong>?</p>
+                        <p>Do you really want to remove <strong>{user.name}</strong>?</p>
                     </div>
                     <div className="modal-footer">
                         <button
                             type="button"
                             className="btn btn-secondary"
+                            data-bs-dismiss="modal"
                             onClick={onClose}
                         >
-                            Anuluj
+                            Cancel
                         </button>
                         <button
                             type="button"
-                            className="btn btn-danger"
+                            className="btn btn-primary"
                             onClick={() => onDelete(user.id)}
                         >
-                            Usuń
+                            Delete
                         </button>
                     </div>
                 </div>

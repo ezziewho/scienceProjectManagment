@@ -102,6 +102,37 @@ export const getTasks = async (req, res) => {
     }
 };
 
+export const getAllTasks = async (req, res) => {
+    try {
+        // Pobierz wszystkie zadania wraz z informacjami o przypisanych użytkownikach
+        const tasks = await Task.findAll({
+            include: [
+                {
+                    model: User,
+                    attributes: ["id", "name"], // Pobierz ID i nazwę użytkowników
+                    through: { attributes: [] } // Pomijamy dodatkowe dane z tabeli pośredniej
+                }
+            ]
+        });
+
+        // Formatowanie danych
+        const formattedTasks = tasks.map((task) => ({
+            id: task.id,
+            title: task.title,
+            description: task.description,
+            stage: task.stage,
+            dueDate: task.dueDate,
+            usersResponsible: task.Users.map((user) => user.name).join(", "),
+        }));
+
+        res.json(formattedTasks);
+    } catch (error) {
+        console.error("Error fetching all tasks:", error);
+        res.status(500).json({ error: "Error fetching all tasks" });
+    }
+};
+
+
 
 
 
@@ -139,15 +170,14 @@ export const createTask = async (req, res) => {
 */
 export const createTask = async (req, res) => {
     try {
-        console.log("Session data:", req.session); // Log sesji
-        const { title, description, stage, dueDate } = req.body; // Zakładam, że nowo utworzone zadanie ma `dueDate`
-        const userId = req.session.userId;
+        const { title, description, stage, dueDate, assignedUsers } = req.body; // Pobieramy dane z żądania
+        const userId = req.session.userId; // Identyfikator aktualnie zalogowanego użytkownika
 
         if (!userId) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
-        // Tworzenie zadania
+        // Tworzymy zadanie
         const task = await Task.create({
             title,
             description,
@@ -155,22 +185,26 @@ export const createTask = async (req, res) => {
             dueDate,
         });
 
-        // Powiązanie zadania z użytkownikiem w tabeli `task_users`
-        await TaskUser.create({
-            task_id: task.id,
-            user_id: userId,
-        });
+        // Znajdujemy użytkowników przypisanych do zadania
+        if (assignedUsers && assignedUsers.length > 0) {
+            const usersToAssign = await User.findAll({
+                where: { name: assignedUsers }, // Znajdujemy użytkowników na podstawie nazw
+            });
 
-        // Pobranie zadania z użytkownikami odpowiedzialnymi
+            // Dodajemy użytkowników do zadania
+            await task.addUsers(usersToAssign);
+        }
+
+        // Pobieramy zadanie wraz z przypisanymi użytkownikami
         const createdTask = await Task.findOne({
             where: { id: task.id },
             include: [
                 {
                     model: User,
-                    attributes: ["name"],
-                    through: { attributes: [] }
-                }
-            ]
+                    attributes: ["name", "email"], // Pobieramy tylko nazwę i e-mail użytkowników
+                    through: { attributes: [] }, // Nie pokazujemy szczegółów tabeli pośredniej
+                },
+            ],
         });
 
         res.json({
@@ -179,7 +213,10 @@ export const createTask = async (req, res) => {
             description: createdTask.description,
             stage: createdTask.stage,
             dueDate: createdTask.dueDate,
-            usersResponsible: createdTask.Users.map((user) => user.name).join(", "),
+            assignedUsers: createdTask.Users.map((user) => ({
+                name: user.name,
+                email: user.email,
+            })),
         });
     } catch (error) {
         console.error("Error creating task:", error);
@@ -226,5 +263,16 @@ export const deleteTask = async (req, res) => {
     } catch (error) {
         console.error("Error deleting task:", error);
         res.status(500).json({ error: "Error deleting task" });
+    }
+};
+
+export const getStages = async (req, res) => {
+    try {
+        // Pobranie możliwych wartości dla pola `stage`
+        const stages = Task.getAttributes().stage.values; // Pobieramy wartości ENUM
+        res.status(200).json(stages); // Zwracamy je jako tablicę JSON
+    } catch (error) {
+        console.error("Error fetching task stages:", error);
+        res.status(500).json({ error: "Error fetching task stages" });
     }
 };

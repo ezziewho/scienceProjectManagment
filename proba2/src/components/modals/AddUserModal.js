@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import '../../css/Modal.css'; // Import nowego pliku CSS
 
 function AddUserModal({ onClose, onSave }) {
     const [formData, setFormData] = useState({

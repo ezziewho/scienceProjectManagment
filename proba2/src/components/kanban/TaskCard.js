@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { IconCalendar, IconUser, IconChevronDown, IconChevronUp } from "@tabler/icons-react";
 import "../../css/TaskCard.css";
 
 function TaskCard({ task, isDone }) {
@@ -18,8 +19,6 @@ function TaskCard({ task, isDone }) {
         return new Intl.DateTimeFormat("en-GB", options).format(new Date(dateString));
     };
 
-    // If the task is in the "Done" column, it should always appear green.
-    // Otherwise, determine if it's overdue.
     const taskClass = isDone
         ? "done-task"
         : task.dueDate && new Date(task.dueDate) < new Date()
@@ -31,22 +30,28 @@ function TaskCard({ task, isDone }) {
             className={`task-card ${taskClass} ${isExpanded ? "expanded" : ""}`}
             draggable
             onDragStart={handleDragStart}
-            onClick={toggleExpand}
         >
-            {/* Header with the task title */}
+            {/* Header with title and expand/collapse button */}
             <div className="task-card-header">
                 <h5 className="task-card-title">{task.title}</h5>
+                <button className="task-card-toggle" onClick={toggleExpand}>
+                    {isExpanded ? <IconChevronUp size={20} /> : <IconChevronDown size={20} />}
+                </button>
             </div>
 
-            {/* Task information */}
+            {/* Info Section */}
             <div className="task-card-info">
-                <span className="task-card-due">Due: {formatDate(task.dueDate)}</span>
+                <div className="task-card-due">
+                    <IconCalendar size={16} />
+                    <span>{formatDate(task.dueDate)}</span>
+                </div>
                 <div className="task-card-users">
-                    {task.usersResponsible || "No users assigned"}
+                    <IconUser size={16} />
+                    <span>{task.usersResponsible || "No users assigned"}</span>
                 </div>
             </div>
 
-            {/* Task description (visible only when expanded) */}
+            {/* Description (visible only when expanded) */}
             {isExpanded && (
                 <div className="task-card-description">
                     <p>{task.description || "No description available."}</p>

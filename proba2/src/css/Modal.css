@@ -1,120 +1,114 @@
 /* AddUserModal.css */
 
-/* Modal overlay background */
+/* Tło modalnego okna */
 .modal-overlay {
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent dark background */
+    background: rgba(0, 0, 0, 0.5); /* Półprzezroczyste ciemne tło */
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1050; /* Above normal content */
+    width: 100%; /* Cała szerokość okna */
+    height: 100%; /* Cała wysokość okna */
+    display: flex; /* Użycie flexboxa do centrowania zawartości */
+    align-items: center; /* Wyrównanie elementów w pionie */
+    justify-content: center; /* Wyśrodkowanie elementów w poziomie */
+    z-index: 1050; /* Wyświetlanie nad innymi elementami */
 }
 
-/* Modal dialog box */
+/* Główne okno modalne */
 .modal-dialog {
-    background: #ffffff !important; /* Solid white background */
-    border-radius: 10px !important;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important; /* Subtle shadow */
-    width: 100%;
-    max-width: 500px; /* Limit the size of the modal */
-    overflow: hidden;
+    background: #ffffff !important; /* Białe, jednolite tło */
+    border-radius: 10px !important; /* Zaokrąglenie rogów */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2) !important; /* Subtelny cień */
+    width: 100%; /* Szerokość na 100% */
+    max-width: 400px !important; /* Maksymalna szerokość okna */
+    overflow: hidden; /* Ukrycie nadmiarowych elementów */
 }
 
-/* Modal header */
+/* Nagłówek modalnego okna */
 .modal-header {
-    background: #f8f9fa !important; /* Light gray header background */
-    border-bottom: 1px solid #e9ecef !important;
-    padding: 15px 20px !important;
+    background: #343a40 !important; /* Jasnoszare tło nagłówka */
+    border-bottom: 1px solid #343a40 !important; /* Dolna granica */
+    padding: 15px 20px !important; /* Odstępy wewnętrzne w nagłówku */
 }
 
 .modal-title {
-    font-family: "Poppins", sans-serif !important;
-    font-size: 20px !important;
-    font-weight: bold !important;
-    color: #343a40 !important; /* Dark gray text */
-    margin: 0 !important;
+
+    font-family: "Poppins", sans-serif ; /* Czcionka Poppins */
+    font-size: 20px !important; /* Wielkość tekstu 20px */
+    font-weight: bold !important; /* Pogrubienie tekstu */
+    color: e9ecef !important; /* Ciemnoszary kolor tekstu */
+    margin: 0 !important; /* Usunięcie domyślnych marginesów */
+    
 }
 
 .btn-close {
-    color: #6c757d !important;
+    color: #282b2e !important; /* Ciemnoszary kolor przycisku zamykającego */
 }
 
-/* Modal body */
+/* Treść modalnego okna */
 .modal-body {
-    padding: 20px !important;
-    font-family: "Poppins", sans-serif !important;
-    color: #343a40 !important; /* Standard black text */
+    padding: 20px !important; /* Odstępy wewnętrzne */
+    font-family: "Poppins", sans-serif !important; /* Czcionka Poppins */
+    color: #343a40 !important; /* Standardowy czarny kolor tekstu */
 }
 
-/* Form inputs */
+/* Pola formularza */
 .form-control {
-    background: #f1f1f1 !important; /* Light gray input background */
-    border: none !important;
-    padding: 10px !important;
-    border-radius: 5px !important;
-    font-family: "Poppins", sans-serif !important;
-    font-size: 14px !important;
-    margin-bottom: 10px !important;
+    background: #f1f1f1 !important; /* Jasnoszare tło w polach tekstowych */
+    border: none !important; /* Brak obramowania */
+    padding: 10px !important; /* Odstępy wewnętrzne */
+    border-radius: 5px !important; /* Zaokrąglenie rogów pól */
+    font-family: "Poppins", sans-serif !important; /* Czcionka Poppins */
+    font-size: 14px !important; /* Wielkość tekstu 14px */
+    margin-bottom: 10px !important; /* Odstępy pomiędzy polami */
+
+  
 }
 
 .form-control:focus {
-    outline: none !important;
-    box-shadow: 0 0 8px rgba(52, 58, 64, 0.8) !important; /* Subtle dark effect */
-    border: 1px solid #495057 !important; /* Focus border */
+    outline: none !important; /* Usunięcie domyślnej obwódki */
+    box-shadow: 0 0 8px rgba(52, 58, 64, 0.8) !important; /* Subtelny ciemny efekt wokół pola */
+    border: 1px solid #495057 !important; /* Obramowanie przy aktywnym polu */
 }
 
-/* Buttons */
+/* Przyciski */
 .modal-footer .btn {
-    padding: 10px 20px !important;
-    font-family: "Poppins", sans-serif !important;
-    font-weight: bold !important;
-    border-radius: 5px !important;
+    padding: 10px 20px !important; /* Odstępy wewnętrzne w przyciskach */
+    font-family: "Poppins", sans-serif !important; /* Czcionka Poppins */
+    font-weight: bold !important; /* Pogrubienie tekstu */
+    border-radius: 5px !important; /* Zaokrąglenie rogów przycisków */
 }
 
 .btn-primary {
-    background-color: #ffc107 !important; /* Golden button */
-    color: #ffffff !important;
-    border: none !important;
-    transition: all 0.3s ease !important;
+    background-color: #ffc107 !important; /* Złoty kolor przycisku */
+    color: #ffffff !important; /* Biały kolor tekstu */
+    border: none !important; /* Brak obramowania */
+    transition: all 0.3s ease !important; /* Płynne przejścia podczas najechania */
 }
 
 .btn-primary:hover {
-    background-color: #e0a800 !important; /* Slightly darker gold */
-    color: #ffffff !important;
+    background-color: #e0a800 !important; /* Nieco ciemniejszy złoty kolor przy najechaniu */
+    color: #ffffff !important; /* Biały kolor tekstu */
 }
 
 .btn-secondary {
-    background-color: #6c757d !important; /* Secondary gray */
-    color: #ffffff !important;
-    border: none !important;
-    transition: all 0.3s ease !important;
+    background-color: #6c757d !important; /* Szary kolor przycisku */
+    color: #ffffff !important; /* Biały kolor tekstu */
+    border: none !important; /* Brak obramowania */
+    transition: all 0.3s ease !important; /* Płynne przejścia podczas najechania */
 }
 
 .btn-secondary:hover {
-    background-color: #5a6268 !important; /* Slightly darker gray */
-    color: #ffffff !important;
+    background-color: #5a6268 !important; /* Nieco ciemniejszy szary kolor przy najechaniu */
+    color: #ffffff !important; /* Biały kolor tekstu */
 }
 
-/* Modal footer */
+/* Stopka modalnego okna */
 .modal-footer {
-    background: #f8f9fa !important;
-    border-top: 1px solid #e9ecef !important;
-    padding: 15px 20px !important;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-.btn-primary {
-    background-color: #ffc107 !important;
-    color: #343a40;
-    border: none;
-    font-weight: bold;
-    border-radius: 5px;
-    padding: 10px;
-    transition: all 0.3s ease;
+    background: #f8f9fa !important; /* Jasnoszare tło stopki */
+    border-top: 1px solid #e9ecef !important; /* Górna granica */
+    padding: 15px 20px !important; /* Odstępy wewnętrzne */
+    display: flex; /* Użycie flexboxa do rozmieszczenia przycisków */
+    justify-content: flex-end; /* Wyrównanie przycisków do prawej strony */
+    gap: 10px; /* Odstępy pomiędzy przyciskami */
 }

@@ -1,3 +1,6 @@
+
+
+
 /* Tło strony z rozjaśnionym obrazem */
 .kanban-board {
   background: url('../images/tlo.jpg') no-repeat center center fixed; /* Obraz jako tło */
@@ -11,6 +14,17 @@
   align-items: center;
 }
 
+.kanban-background {
+  background: url('../images/tlo.jpg') no-repeat center center fixed; /* Obraz jako tło */
+  background-size: cover; /* Dopasowanie tła */
+  position: relative; /* Pozycjonowanie dla nakładki */
+  min-height: 100vh;
+  color: #f8f9fa; /* Jasny tekst */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 /* Nakładka rozjaśniająca i rozmywająca obraz */
 .kanban-board::before {
   content: '';
@@ -98,6 +112,63 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
 
+/* Kontener przycisków */
+.kanban-buttons-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  gap: 10px;
+}
+
+/* Styl podstawowy przycisku */
+.kanban-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: 1px solid rgba(204, 154, 6);
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Przycisk aktywny */
+.kanban-button.active {
+  background-color: rgba(204, 154, 6);
+  color: #fff;
+}
+
+/* Przycisk nieaktywny */
+.kanban-button.inactive {
+  background-color: #f0f0f0;
+  color: #000;
+}
+
+/* Styl przycisku "Add Task" */
+.add-task-button {
+  background-color: rgba(25, 135, 84);
+  color: #fff;
+  padding: 10px 20px;
+  border: 1px solid rgba(25, 135, 84);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+.kanban-controls {
+  display: flex;
+  justify-content: center; /* Center the checkbox horizontally */
+  align-items: center; /* Align vertically */
+  margin-bottom: 20px; /* Add spacing below the checkbox */
+}
+
+.kanban-controls label {
+  font-family: "Poppins", sans-serif;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff; /* Neutral dark text */
+  cursor: pointer; /* Make it clear that the label is clickable */
+  display: flex;
+  align-items: center; /* Center align the label with the checkbox */
+  gap: 10px; /* Add space between the checkbox and the text */
+}
+
 /* Responsywność */
 @media (max-width: 768px) {
   .kanban-columns {
@@ -105,3 +176,4 @@
       gap: 15px;
   }
 }
+

@@ -46,7 +46,7 @@ h2 {
 }
 
 .form-control:focus {
-    outline: none;
+    outline: none !important;
     box-shadow: 0 0 8px rgba(255, 193, 7, 0.8); /* Złoty efekt */
 }
 

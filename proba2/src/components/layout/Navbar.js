@@ -5,7 +5,7 @@ import "../../css/Navbar.css";
 
 function Navbar() {
     const navigate = useNavigate();
-    const [currentUser, setCurrentUser] = useState(null); // Zamiast samego `isLoggedIn`
+    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
         axios
@@ -16,14 +16,14 @@ function Navbar() {
                 }
             })
             .catch(() => setCurrentUser(null)); // W przypadku błędu ustaw brak użytkownika
-    }, []); // Zawsze sprawdzaj sesję przy załadowaniu Navbar
+    }, []);
 
     const handleLogout = () => {
         axios
             .post("http://localhost:8081/auth/logout", {}, { withCredentials: true })
             .then(() => {
-                setCurrentUser(null); // Usuń dane użytkownika
-                navigate("/login"); // Przekieruj do logowania
+                setCurrentUser(null);
+                navigate("/login");
             })
             .catch((err) => console.error("Logout error:", err));
     };
@@ -46,16 +46,14 @@ function Navbar() {
                 <div className="collapse navbar-collapse" id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <Link className="nav-link custom-link" to="/home">Home</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link custom-link" to="/about">About</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link custom-link" to="/kanban">Kanban</Link>
+                            <Link className="nav-link custom-link" to="/kanban">Tasks</Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link custom-link" to="/team">Team</Link>
+                        </li>
+                        {/* Nowa zakładka dla grantów */}
+                        <li className="nav-item">
+                            <Link className="nav-link custom-link" to="/grants">Grants</Link>
                         </li>
                     </ul>
                     <ul className="navbar-nav ms-auto">

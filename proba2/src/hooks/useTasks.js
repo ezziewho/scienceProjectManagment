@@ -3,22 +3,48 @@ import { fetchTasks, updateTask, createTask } from "../services/taskService";
 
 export const useTasks = () => {
   const [tasks, setTasks] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [showAllTasks, setShowAllTasks] = useState(false); // Toggle state
 
+  // Fetch tasks dynamically based on the toggle
   useEffect(() => {
-    fetchTasks()
-      .then((res) => setTasks(res.data))
-      .catch((err) => console.error("Error fetching tasks:", err));
-  }, []);
+    const fetchDynamicTasks = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const response = await fetchTasks(showAllTasks);
+        setTasks(response.data);
+      } catch (err) {
+        setError("Error fetching tasks.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const addTask = (task) =>
-    createTask(task).then((res) => setTasks((prev) => [...prev, res.data]));
+    fetchDynamicTasks();
+  }, [showAllTasks]); // Re-fetch tasks when the toggle changes
 
-  const updateTaskInState = (updatedTask) =>
-    updateTask(updatedTask).then(() =>
+  const addTask = async (task) => {
+    try {
+      const response = await createTask(task);
+      setTasks((prev) => [...prev, response.data]);
+    } catch (err) {
+      console.error("Error adding task:", err);
+    }
+  };
+
+  const updateTaskInState = async (updatedTask) => {
+    try {
+      await updateTask(updatedTask);
       setTasks((prev) =>
         prev.map((task) => (task.id === updatedTask.id ? updatedTask : task))
-      )
-    );
+      );
+    } catch (err) {
+      console.error("Error updating task:", err);
+    }
+  };
 
-  return { tasks, addTask, updateTask: updateTaskInState };
+  return { tasks, addTask, updateTask: updateTaskInState, loading, error, showAllTasks, setShowAllTasks };
 };

@@ -1,178 +1,97 @@
-/* Default task styles */
+/* Task Card Styles */
 .task-card {
-    background: #fff; /* White background */
-    border-radius: 8px;
+    background: #ffffff;
+    border-radius: 12px;
     padding: 15px;
     margin-bottom: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
     transition: box-shadow 0.3s ease, transform 0.2s ease;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    color: #333; /* Black text */
+    gap: 10px;
+    color: #333;
 }
 
 .task-card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Larger shadow on hover */
-    transform: translateY(-2px); /* Subtle lift effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-3px);
 }
 
-/* Task in the "Done" column */
-.done-task {
-    background: #e6ffed; /* Light green background */
-    border-left: 4px solid #28a745; /* Green accent */
-    color: #155724; /* Dark green text */
-}
-
-/* Overdue task (not in "Done") */
-.overdue-task {
-    background: #ffe6e6; /* Light red background */
-    border-left: 4px solid #dc3545; /* Red accent */
-    color: #721c24; /* Dark red text */
-}
-
-/* Task expanded state */
-.task-card.expanded {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
-/* Task header */
+/* Header with title and toggle button */
 .task-card-header {
-    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .task-card-title {
     font-family: "Poppins", sans-serif;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: bold;
     color: #495057;
     margin: 0;
-    text-align: center;
 }
 
-/* Task info section */
+.task-card-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.task-card-toggle:hover {
+    transform: scale(1.2);
+}
+
+/* Info Section */
 .task-card-info {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #6c757d;
 }
 
-/* Due date */
-.task-card-due {
+.task-card-due,
+.task-card-users {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.task-card-due span,
+.task-card-users span {
     font-size: 0.875rem;
     font-weight: bold;
-    color: #495057; /* Default gray for due date */
 }
 
-/* Users */
-.task-card-users {
-    font-size: 0.75rem;
-    color: #6c757d; /* Subtle gray */
-    text-align: right;
-    font-style: italic;
+/* Expanded State */
+.task-card.expanded {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    background: #f8f9fa;
 }
 
-/* Task description */
+/* Description */
 .task-card-description {
-    margin-top: 15px;
+    margin-top: 10px;
     font-size: 0.875rem;
     color: #495057;
     line-height: 1.5;
     border-top: 1px solid #e9ecef;
     padding-top: 10px;
 }
-/* Overlay dla modala */
-.modal.fade.show {
-    display: block; /* Upewniamy się, że modal jest widoczny */
-    background-color: rgba(0, 0, 0, 0.5); /* Półprzezroczyste tło */
-    animation: fadeIn 0.3s ease-in-out;
+
+/* Done Task */
+.done-task {
+    background: #e6ffed;
+    border-left: 6px solid #28a745;
+    color: #155724;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
-    }
-}
-
-/* Modal */
-.modal-dialog {
-    max-width: 500px;
-    margin: auto;
-}
-
-.modal-content {
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    border: none; /* Usuwamy domyślną ramkę */
-}
-
-/* Nagłówek modala */
-.modal-header {
-    background-color: #343a40; /* Ciemne tło (pasuje do aplikacji) */
-    color: #fff; /* Jasny tekst */
-    font-family: "Poppins", sans-serif;
-    border-bottom: none; /* Usuwamy dolną linię */
-    padding: 20px;
-}
-
-.modal-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0;
-}
-
-/* Przycisk zamykania */
-.btn-close {
-    background: transparent;
-    border: none;
-    font-size: 1.25rem;
-    color: #fff;
-    opacity: 0.8;
-    transition: opacity 0.2s ease;
-}
-
-.btn-close:hover {
-    opacity: 1;
-    color: #ffc107; /* Złoty kolor przy najechaniu */
-}
-
-/* Ciało modala */
-.modal-body {
-    padding: 20px;
-    font-family: "Poppins", sans-serif;
-    font-size: 1rem;
-    color: #6c757d; /* Szary tekst */
-    line-height: 1.6;
-}
-
-/* Stopka modala */
-.modal-footer {
-    background-color: #f8f9fa; /* Jasne tło */
-    padding: 15px 20px;
-    display: flex;
-    justify-content: flex-end;
-    border-top: none; /* Usuwamy linię */
-}
-
-/* Przycisk w stopce */
-.modal-footer .btn {
-    background-color: #007bff; /* Niebieski przycisk */
-    color: #fff; /* Biały tekst */
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: 500;
-    padding: 10px 20px;
-    transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.modal-footer .btn:hover {
-    background-color: #0056b3; /* Ciemniejszy niebieski */
-    transform: translateY(-2px); /* Subtelny efekt unoszenia */
+/* Overdue Task */
+.overdue-task {
+    background: #ffe6e6;
+    border-left: 6px solid #dc3545;
+    color: #721c24;
 }
