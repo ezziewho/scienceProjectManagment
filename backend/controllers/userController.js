@@ -45,6 +45,35 @@ export const getUsers = async (req, res) => {
     }
 };
 
+
+export const getUserById = async (req, res) => {
+    try {
+        console.log("Session data:", req.session); // Log sesji dla debugowania
+        const userId = req.session.userId; // Pobranie userId z sesji
+
+        if (!userId) {
+            return res.status(401).json({ error: "Unauthorized" });
+        }
+
+        const { id } = req.params; // Pobranie ID użytkownika z parametrów URL
+        
+        // Pobierz użytkownika o danym ID
+        const user = await User.findOne({
+            where: { id },
+            attributes: ["id", "name", "email", "role"] // Pobieramy wyłącznie potrzebne pola
+        });
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.status(200).json(user);
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        res.status(500).json({ error: "Error fetching user" });
+    }
+};
+
 export const addUser = async (req, res) => {
     try {
         const { name, email, role } = req.body;

@@ -1,0 +1,100 @@
+/* Tło strony z zamglonym obrazem */
+.grant-board {
+    background: url('../images/tlo.jpg') no-repeat center center fixed; /* Obraz jako tło */
+    background-size: cover;
+    position: relative;
+    min-height: 100vh;
+    color: #f8f9fa;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  /* Nakładka rozjaśniająca i rozmywająca obraz */
+  .grant-board::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 0;
+  }
+  
+  /* Kontener dla tabeli grantów */
+  .grant-table-container {
+    position: relative;
+    z-index: 1;
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 1200px;
+  }
+  
+  .filters label {
+    color: black; /* Ustawia kolor tekstu */
+    font-size: 14px; /* Opcjonalnie, zmniejszenie czcionki */
+    display: flex; /* Ustawia checkbox i tekst w jednej linii */
+    align-items: center;
+    gap: 5px; /* Odstęp między checkboxem a tekstem */
+  }
+
+  
+  /* Styl dla filtrów */
+  .filters {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .filters input {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 20%;
+  }
+  
+  .filters input:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  /* Styl dla tabeli grantów */
+  .grant-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .grant-table th,
+  .grant-table td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+    color: #212529;
+  }
+  
+  .grant-table th {
+    background-color: #343a40;
+    color: white;
+  }
+  
+  .grant-table tr:hover {
+    background-color: #f1f1f1;
+    cursor: pointer;
+  }
+  
+  .text-danger {
+    color: #dc3545 !important;
+  }
+  
+  .grant-table td.text-danger {
+    font-weight: bold;
+  }
+  

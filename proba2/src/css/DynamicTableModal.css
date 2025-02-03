@@ -1,0 +1,194 @@
+/* Overlay modalu */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: white(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Kontener modalu */
+.modal-content {
+    background: #ffffff !important; /* Pełny biały kolor */
+    width: 100%;
+    max-width: 1200px;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 20px;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.3s ease-in-out;
+    z-index: 1001; /* Upewnienie się, że modal jest nad overlayem */
+    opacity: 1 !important; /* Upewnienie się, że modal nie jest przezroczysty */
+}
+
+/* Przycisk zamknięcia */
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    color: black;
+    border: none;
+    padding: 5px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.close-modal:hover {
+    transform: scale(1);
+    color: black; /* Minimalistyczne przyciemnienie */
+}
+
+/* Styl tabeli */
+.category-table {
+    width: auto; /* Dopasowanie do zawartości */
+    max-width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    table-layout: fixed;
+    font-size: 14px;
+}
+
+.category-table th, .category-table td {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.category-table th {
+    background: #343a40;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    font-size: 14px;
+
+}
+
+
+.icon-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.2s ease;
+}
+
+.icon-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Stylizacja ikony podglądu */
+.view-btn {
+    background-color: #0d6efd; /* Niebieski */
+    color: white;
+    padding: 6px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Stylizacja ikony edycji */
+.edit-btn {
+    background-color: #ffca28; /* Żółty */
+    color: white;
+    padding: 6px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Stylizacja ikony usunięcia */
+.delete-btn {
+    background-color: #dc3545; /* Czerwony */
+    color: white;
+    padding: 6px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Kolumna dla akcji */
+.actions-column {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+/* Kontener filtrów */
+.filter-container {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  /* Pola wyszukiwania */
+  .filter-input {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 20%;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  /* Efekt focus */
+  .filter-input:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+  
+  /* Efekt hover */
+  .filter-input:hover {
+    border-color: #007bff;
+  }
+  /* Status - Czerwony dla "approved" */
+.status-badge.approved {
+    background-color: #28a745;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+/* Status - Niebieski dla "pending" */
+.status-badge.pending {
+    background-color: #0d6efd;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+/* Status - Zielony dla "rejected" */
+.status-badge.rejected {
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+/* Animacja */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}

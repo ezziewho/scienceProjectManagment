@@ -1,0 +1,110 @@
+/* Kontener tabeli */
+.leave-container {
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Tytuł */
+.leave-title {
+    font-size: 26px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #343a40;
+}
+
+/* Tabela */
+.leave-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.leave-table th, .leave-table td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+    color: #212529;
+}
+
+.leave-table th {
+    background-color: #343a40;
+    color: white;
+}
+
+/* Statusy */
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.status-badge.approved {
+    background-color: #28a745;
+    color: white;
+}
+
+.status-badge.pending {
+    background-color: #0d6efd;
+    color: white;
+}
+
+.status-badge.rejected {
+    background-color: #28a745;
+    color: white;
+}
+
+/* Akcje */
+.actions-column {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+/* Ikony akcji */
+.icon-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.2s ease;
+}
+
+.icon-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Podgląd */
+.view-btn {
+    background-color: #0d6efd;
+    color: white;
+    padding: 6px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Akceptacja */
+.approve-btn {
+    background-color: #ffca28;
+    color: white;
+    padding: 6px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Odrzucenie */
+.reject-btn {
+    background-color: #dc3545;
+    color: white;
+    padding: 6px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

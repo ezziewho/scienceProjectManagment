@@ -4,6 +4,52 @@
     padding: 1rem;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
+.notification-icon {
+    background: none !important; /* Usuwa tło */
+    border: none; /* Usuwa obramowanie */
+    cursor: pointer; /* Zmienia kursor */
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.notification-icon svg {
+    color: white !important; /* Upewnij się, że ikona ma odpowiedni kolor */
+    width: 24px;
+    height: 24px;
+}
+
+/* Poprawiona stylizacja dla dropdowna powiadomień */
+.notification-dropdown {
+    position: absolute; /* Ustawia powiadomienia jako nakładkę */
+    top: 60px; /* Ustawia dropdown poniżej ikony dzwonka */
+    right: 50px; /* Dopasowanie do prawej strony */
+    width: 280px; /* Minimalnie większa szerokość */
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Delikatniejszy cień */
+    padding: 10px;
+    z-index: 1000;
+    transition: all 0.2s ease-in-out; /* Ładniejsza animacja */
+}
+
+/* Styl dla każdej pozycji w dropdownie */
+.notification-item {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item:hover {
+    background: #f5f5f5;
+}
 
 .custom-brand {
     font-family: "Poppins", sans-serif;

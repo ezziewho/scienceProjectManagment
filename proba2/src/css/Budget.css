@@ -1,0 +1,247 @@
+.icon-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    transition: transform 0.2s ease;
+}
+
+.icon-btn:hover {
+    transform: scale(1.1);
+}
+.negative-difference {
+    color: red;
+    font-weight: bold;
+}
+/* Stylizacja przycisku edycji */
+.edit-btn {
+    background-color: #ffca28; /* Żółty */
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Stylizacja przycisku zapisu */
+.save-btn {
+    background-color: #28a745; /* Zielony */
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Stylizacja przycisku anulowania */
+.cancel-btn {
+    background-color: #dc3545; /* Czerwony */
+    color: white;
+    padding: 8px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column; /* Ustawienie przycisków pionowo */
+    gap: 4px; /* Odstęp między przyciskami */
+    align-items: center; /* Wyśrodkowanie przycisków */
+}
+/* Ikony w przyciskach */
+.icon-btn svg {
+    color: white;
+}
+
+
+.budget-summary-title {
+    font-size: 26px;
+    font-weight: bold;
+    text-align: left;
+    margin-bottom: 15px; /* Dodatkowy odstęp od tabeli */
+    color: #343a40;
+    position: relative;  /* Upewniamy się, że nie ukrywa się pod tłem */
+    z-index: 3;  /* Podnosimy nad inne elementy */
+}
+
+.budget-title {
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #343a40;
+    position: relative;  /* Zapobiega ukrywaniu pod tłem */
+    z-index: 3;  /* Wyższa wartość niż tło */
+}
+
+
+/* Kontener strony budżetu */
+.budget-container {
+    background: url('../images/tlo.jpg') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+    min-height: 100vh;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.edit-notes {
+    width: 100%;  /* Dopasowanie do szerokości komórki */
+    min-height: 60px; /* Minimalna wysokość */
+    max-height: 120px; /* Maksymalna wysokość, aby uniknąć nadmiernego rozciągania */
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    resize: vertical; /* Pozwala na zmianę wysokości */
+    font-family: inherit; /* Zachowanie spójności czcionki */
+}
+
+
+/* Efekt rozmycia */
+.budget-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 0;
+}
+
+/* Tytuł */
+.budget-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #343a40;
+}
+
+.category-table th, .category-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.category-table th {
+    background: #f8f9fa;
+    font-weight: bold;
+}
+
+.budget-table thead {
+    background-color: #343a40 !important;  /* Dark gray background */
+    color: white !important;  /* White text */
+}
+
+/* Główna tabela */
+.budget-table {
+    width: 90%;
+    max-width: 1200px;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+}
+
+.budget-table th, .budget-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.budget-table th {
+    background: #343a40 !important;  /* Ensure background is applied */
+    font-weight: bold;
+    color: white !important;  /* Ensuring text is white */
+}
+
+.total-row td {
+    font-weight: bold;
+    background: #f1f1f1;
+}
+
+/* Kontener na boxy */
+.budget-boxes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+/* Boxy kategorii */
+.budget-box {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+    cursor: pointer;
+}
+
+.budget-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.budget-box h2 {
+    font-size: 1.25rem;
+    color: #343a40;
+    margin-bottom: 10px;
+}
+
+/* Wyświetlana tabela dla danej kategorii */
+.category-table {
+    width: 90%;
+    max-width: 800px;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.category-table h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #343a40;
+}
+
+.category-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.budget-table th {
+    padding: 10px;
+    font-size: 14px;
+    text-align: center;
+    font-weight: bold;
+    background-color: #343a40 !important;  /* Ensure background is applied */
+    color: white !important;  /* Ensuring text is white */
+}
+
+/* Animacja pojawiania się */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+

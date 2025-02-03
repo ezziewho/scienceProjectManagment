@@ -1,0 +1,17 @@
+.profile-background { 
+    background: url('../images/tlo.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Stylizacja karty profilu dla lepszej czytelności */
+.profile-card {
+    width: 100%;
+    max-width: 450px;
+    background: rgba(255, 255, 255, 0.9); /* Delikatne półprzezroczyste tło */
+    border-radius: 10px;
+    padding: 20px;
+}

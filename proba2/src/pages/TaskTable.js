@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { IconEdit, IconTrash } from "@tabler/icons-react";
+import { IconEdit, IconTrash, IconSearch } from "@tabler/icons-react";
 import "../css/TaskTable.css"; // Styl tabeli
 import EditTaskModal from "../components/modals/EditTaskModal"; // Importujemy modal edycji
 
@@ -166,6 +166,12 @@ const TaskTable = () => {
                 ))}
               </td>
               <td>
+                <button
+                  className="btn btn-sm btn-custom-blue me-2" style={{ backgroundColor: "#0d6efd", borderColor: "#0d6efd" }}
+                  onClick={() => handleEditClick(task)}
+                >
+                  <IconSearch  size={16} />
+                </button>
                 <button
                   className="btn btn-sm btn-primary me-2"
                   onClick={() => handleEditClick(task)}

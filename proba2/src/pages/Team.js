@@ -87,16 +87,27 @@ function Team() {
 
     return (
         <div className="team-container">
-            <h1 className="team-title">Team Members
-            {currentUser?.role === "admin" && (
-        <button
-            className="btn btn-sm btn-success ms-3"
-            onClick={() => setIsAddModalOpen(true)}
-        >
-            Add User
-        </button>
+         <h1 className="team-title">
+    Team Members
+    {currentUser?.role === "admin" && (
+        <>
+            <button
+                className="btn btn-sm btn-success ms-3"
+                onClick={() => setIsAddModalOpen(true)}
+            >
+                Add User
+            </button>
+
+            <button
+                className="btn btn-sm btn-primary ms-3"
+                onClick={() => window.location.href = "/admin/leaves"}
+            >
+                Leave Management
+            </button>
+        </>
     )}
-            </h1>
+</h1>
+
 
             <div className="members-list">
                 {teamMembers.map((member) => (
