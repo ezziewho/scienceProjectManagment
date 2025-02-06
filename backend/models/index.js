@@ -5,6 +5,7 @@ import TaskUser from "./TaskUser.js"; // TaskUser model
 import Notification from "./Notification.js";
 import Leave from "./Leave.js";
 import PlannedBudget from "./budgetModels/PlannedBudget.js";
+import TaskFile from "./documentModels/TaskFile.js";
 
 // Import modeli budżetu
 import EquipmentAndSoftware from "./budgetModels/EquipmentAndSoftware.js";
@@ -14,23 +15,26 @@ import OpenAccess from "./budgetModels/OpenAccess.js";
 import Salaries from "./budgetModels/Salaries.js";
 import TravelCosts from "./budgetModels/TravelCosts.js";
 import Others from "./budgetModels/Others.js";
-import ExpenseDocuments from "./documentModels/ExpenseDocuments.js";
+import ExpenseFile from "./documentModels/ExpenseFile.js";
+import TeamFile from "./documentModels/TeamFile.js";
 
 // Export models and Sequelize instance
 export {
-    sequelize,
-    User,
-    Task,
-    TaskUser,
-    Notification,
-    Leave,
-    EquipmentAndSoftware,
-    ExternalServices,
-    IndirectCosts,
-    OpenAccess,
-    Salaries,
-    TravelCosts,
-    Others,
-    ExpenseDocuments,
-    PlannedBudget
+  sequelize,
+  User,
+  Task,
+  TaskUser,
+  Notification,
+  Leave,
+  EquipmentAndSoftware,
+  ExternalServices,
+  IndirectCosts,
+  OpenAccess,
+  Salaries,
+  TravelCosts,
+  Others,
+  ExpenseFile,
+  PlannedBudget,
+  TaskFile,
+  TeamFile,
 };

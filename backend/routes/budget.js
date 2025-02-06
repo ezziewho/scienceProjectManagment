@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.get("/summary", isAuthenticated, getBudgetSummary);
 router.get("/planned", isAuthenticated, getPlannedBudget);
-router.get("/:category", isAuthenticated, getExpensesByCategory);
+router.get("/:cat", isAuthenticated, getExpensesByCategory);
 
 // Tworzenie nowego wydatku
 router.post("/create", isAuthenticated, createExpense);

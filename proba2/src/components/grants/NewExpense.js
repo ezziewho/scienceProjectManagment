@@ -11,36 +11,50 @@ const NewExpense = () => {
   const CurrentSectionComponent = sections[section] || sections["equipment"];
   const { currentUser } = useAuth(); // Get current user info
 
-  // Stan formularza
-  const [formData, setFormData] = useState(
-    JSON.parse(localStorage.getItem("draftExpense")) || {}
-  );
+  // Odczytywanie danych z localStorage (bez pliku)
+  const [formData, setFormData] = useState(() => {
+    const savedData = JSON.parse(localStorage.getItem("draftExpense")) || {};
+    return savedData;
+  });
 
-  // Auto-save do LocalStorage co 2 sekundy
   useEffect(() => {
-    const saveInterval = setInterval(() => {
-      localStorage.setItem("draftExpense", JSON.stringify(formData));
-    }, 2000);
+    // Odczytujemy plik z `sessionStorage`
+    const savedFileData = sessionStorage.getItem("expenseFile");
+    if (savedFileData) {
+      const fileBlob = JSON.parse(savedFileData);
+      const file = new File([fileBlob.data], fileBlob.name, {
+        type: fileBlob.type,
+        lastModified: fileBlob.lastModified,
+      });
 
-    return () => clearInterval(saveInterval);
-  }, [formData]);
+      console.log("📂 Przywrócony plik z sessionStorage:", file);
+
+      setFormData((prevData) => ({ ...prevData, file }));
+    }
+  }, []);
+
+  console.log("🔍 Otrzymane formData w NewExpense.js:", formData);
+  console.log("📂 Plik w formData:", formData.file);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Tworzymy nowy obiekt, dodając category na podstawie sekcji
+      console.log("🔍 Aktualny stan formData:", formData);
+
+      const { file, file_description, ...otherData } = formData;
+
+      // Dane do pierwszego requesta (bez pliku)
       const requestData = {
         cat: section,
         user_id: String(currentUser.id),
-        ...formData,
+        ...otherData,
       };
 
-      // Logowanie wysyłanych danych
       console.log("🚀 Wysyłanie danych do backendu:", requestData);
-      console.log("🚀 user.id:", requestData.user_id);
 
+      // ✅ 1️⃣ Wysyłamy dane wydatku do `/budget/create`
       const response = await axios.post(
-        "http://localhost:8081/budget/create", // ✅ Wysyłamy do `/budget/`
+        "http://localhost:8081/budget/create",
         requestData,
         {
           headers: { "Content-Type": "application/json" },
@@ -48,10 +62,47 @@ const NewExpense = () => {
       );
 
       if (response.status === 201) {
-        // ✅ 201 Created (poprawna odpowiedź)
         console.log("✅ Sukces! Odpowiedź serwera:", response.data);
+
+        if (!file) {
+          console.warn("⚠️ Brak pliku do przesłania!");
+        } else {
+          // ✅ 2️⃣ Wysyłamy plik do `/budget/upload-file`
+          console.log("📂 Wybrany plik przed dodaniem do FormData:", file);
+
+          const formDataUpload = new FormData();
+          formDataUpload.append("expense_id", response.data.id);
+          formDataUpload.append("category", section);
+          formDataUpload.append("file", file);
+          formDataUpload.append("file_description", file_description || "");
+          formDataUpload.append("uploaded_by", currentUser.id);
+
+          console.log("📂 Dane w FormData przed wysyłką:", [
+            ...formDataUpload.entries(),
+          ]);
+
+          const fileResponse = await axios.post(
+            "http://localhost:8081/document/upload/expense_files",
+            formDataUpload,
+            {
+              headers: { "Content-Type": "multipart/form-data" },
+            }
+          );
+
+          if (fileResponse.status === 201) {
+            console.log("✅ Plik przesłany pomyślnie:", fileResponse.data);
+          } else {
+            console.error(
+              "❌ Błąd przy przesyłaniu pliku:",
+              fileResponse.status
+            );
+          }
+        }
+
+        // Czyszczenie draftu i przekierowanie
         localStorage.removeItem("draftExpense");
-        navigate("/expenses/list"); // ✅ Przekierowanie po zapisaniu
+        sessionStorage.removeItem("expenseFile");
+        navigate("/expenses/list");
       } else {
         console.error("❌ Błąd zapisu wydatku. Status:", response.status);
       }

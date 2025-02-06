@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Form, Row, Col, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const EquipmentAndSoftware = () => {
   const [formData, setFormData] = useState({
@@ -10,6 +11,8 @@ const EquipmentAndSoftware = () => {
     total_cost: "0.00",
     purchase_date: "",
     supplier: "",
+    file: null,
+    file_description: "",
   });
 
   // Obsługa zmiany w formularzu
@@ -29,9 +32,44 @@ const EquipmentAndSoftware = () => {
     });
   };
 
+  // Obsługa zmiany pliku
+  const handleFileChange = (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      console.error("❌ Nie wybrano pliku!");
+      return;
+    }
+
+    const file = e.target.files[0];
+    console.log("📂 Wybrany plik:", file);
+    console.log("📂 Typ pliku:", file.type);
+    console.log("📂 Nazwa pliku:", file.name);
+    console.log("📂 Rozmiar pliku:", file.size);
+
+    setFormData((prevData) => ({ ...prevData, file }));
+  };
+
   // Obsługa zapisu - tylko wyświetlenie w konsoli
+
   const handleSave = () => {
-    console.log("📋 Wypełnione dane formularza:", formData);
+    console.log("📋 Zapisuję formData:", formData);
+
+    // Tworzymy kopię bez pliku
+    const { file, ...formDataWithoutFile } = formData;
+
+    // Zapisujemy dane tekstowe w `localStorage`
+    localStorage.setItem("draftExpense", JSON.stringify(formDataWithoutFile));
+
+    // Plik zapisujemy w `sessionStorage`
+    if (file) {
+      sessionStorage.setItem(
+        "expenseFile",
+        JSON.stringify({
+          name: file.name,
+          type: file.type,
+          lastModified: file.lastModified,
+        })
+      );
+    }
   };
 
   return (
@@ -128,6 +166,23 @@ const EquipmentAndSoftware = () => {
             type="text"
             name="supplier"
             value={formData.supplier}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        {/* 📌 Upload File */}
+        <Form.Group className="mb-3">
+          <Form.Label>Upload File</Form.Label>
+          <Form.Control type="file" name="file" onChange={handleFileChange} />
+        </Form.Group>
+
+        {/* 📌 File Description */}
+        <Form.Group className="mb-3">
+          <Form.Label>File Description</Form.Label>
+          <Form.Control
+            type="text"
+            name="file_description"
+            value={formData.file_description}
             onChange={handleInputChange}
           />
         </Form.Group>

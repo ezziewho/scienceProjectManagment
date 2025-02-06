@@ -1,0 +1,48 @@
+/* Kontener sidebaru */
+.sidebar-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    max-width: 280px;
+}
+
+/* Nagłówek */
+.sidebar-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #343a40;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+/* Lista kategorii */
+.sidebar-list {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Styl pozycji na liście */
+.sidebar-item {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #343a40;
+    padding: 12px 15px;
+    border-radius: 4px;
+    transition: background-color 0.2s, transform 0.2s;
+    text-align: center;
+}
+
+/* Efekt hover */
+.sidebar-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+
+/* Aktywna sekcja */
+.sidebar-item.active {
+    background-color: #007bff !important;
+    color: white !important;
+    font-weight: bold;
+    transform: none;
+}
