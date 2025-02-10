@@ -1,0 +1,177 @@
+.profile-background {
+    background: url('../images/tlo.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Układ kart */
+.profile-grid {
+    display: grid;
+    grid-template-columns: 550px 600px 550px; /* 🟡 Szerokie boxy */
+    gap: 30px;
+    width: fit-content;
+    max-width: 3000px;
+}
+
+.profile-container {
+    display: flex;
+    justify-content: center; /* Wyśrodkowanie poziome */
+    align-items: center; /* Wyśrodkowanie pionowe */
+    min-height: 100vh;
+    width: 170%;
+    padding: 20px;
+
+}
+/* Karta profilu */
+.profile-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 25px;
+    min-height: 450px;
+    width: 100%; /* 🟡 Boxy zajmują pełną szerokość w gridzie */
+}
+
+/* Stylizacja przycisków */
+/* 🎨 Stylizacja przycisków */
+.btn-profile {
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 6px;
+    width: 100%;
+}
+
+/* 📌 Spójny kolor przycisku (jak Edit Profile) */
+.btn-profile-primary {
+    background-color: #ffca28; /* Żółty kolor */
+    border: none;
+    color: #343a40;
+}
+
+.btn-profile-primary:hover {
+    background-color: #e6b824;
+}
+
+/* 📌 Umiejscowienie przycisku "Request Leave" na dole */
+.leave-card .request-leave-btn {
+    margin-top: auto; /* Wypycha przycisk na dół */
+}
+
+
+/* 🎨 Kontener dla tabeli Leave Requests */
+.leave-table-container {
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 📊 Tabela urlopów */
+.leave-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* 🎯 Nagłówki tabeli */
+.leave-table th {
+    background-color: #343a40 !important;
+    color: white !important;
+    font-weight: bold !important ;
+    text-align: center !important;
+    padding: 14px !important;
+    border-bottom: 2px solid #dee2e6 !important;
+}
+
+/* 📌 Wiersze tabeli */
+.leave-table td {
+    text-align: center !important;
+    padding: 14px;
+    border-bottom: 1px solid #dee2e6 !important;
+    color: #212529 !important;
+}
+
+/* 🟡 Naprzemienne kolory wierszy */
+.leave-table tbody tr:nth-child(odd) {
+    background-color: #f8f9fa !important;
+}
+
+/* ✨ Efekt hover na wierszach */
+.leave-table tr:hover {
+    background-color: #e9ecef !important;
+    cursor: pointer !important;
+}
+
+/* 🏷️ Stylizacja statusów urlopów */
+.badge {
+    padding: 6px 12px ;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 0.85rem;
+    text-transform: capitalize;
+}
+
+/* 🔵 Status "Pending" */
+.badge.pending {
+    background-color: #ffc107;
+    color: black;
+}
+
+/* ✅ Status "Approved" */
+.badge.approved {
+    background-color: #28a745;
+    color: white;
+}
+
+/* ❌ Status "Rejected" */
+.badge.rejected {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* 🏷️ Przyciski akcji */
+.actions-column {
+    text-align: center;
+     /* Stała szerokość, aby kolumna była równa */
+}
+
+/* Jeśli nie ma przycisków, to pole akcji jest wciąż wycentrowane */
+.actions-column:empty {
+    background-color: #f8f9fa;
+}
+
+/* Przycisk usuwania */
+.btn-delete {
+    background: #dc3545;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    transition: background 0.3s ease;
+}
+
+.btn-delete:hover {
+    background: #bb2d3b;
+}
+
+/* 📱 Responsywność */
+@media (max-width: 768px) {
+    .leave-table th,
+    .leave-table td {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,48 @@
+/* Stylizacja sidebaru wydatków */
+.sidebar {
+    background: rgba(52, 58, 64, 0.95); /* Ciemniejszy sidebar */
+    color: #1769bb !important;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    min-height: 100vh;
+    width: 100%;
+}
+
+.sidebar h4 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #f8f9fa; /* Złoty kolor nagłówka */
+    text-align: center;
+}
+
+/* Lista kategorii */
+.sidebar .list-group {
+    background: transparent;
+    border: none;
+}
+
+.sidebar .list-group-item {
+    background: rgba(255, 255, 255, 0.1);
+    color: #f8f9fa;
+    border: none;
+    padding: 12px 16px;
+    font-size: 1rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+    text-align: center;
+    border-radius: 8px;
+    margin-bottom: 10px; /* Dodaje odstęp między elementami */
+}
+
+.sidebar .list-group-item:hover {
+    background: #ffc107;
+    color: #343a40;
+    transform: scale(1.05);
+}
+
+.sidebar .list-group-item.active {
+    background: #ffdd57;
+    color: #343a40;
+    font-weight: bold;
+}

@@ -1,0 +1,134 @@
+.task-table-container {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.filters {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.filters input {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 20%;
+}
+
+.filters input:focus {
+  outline: none;
+  border-color: #80bdff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.task-table th,
+.task-table td {
+  text-align: left;
+  padding: 12px;
+  border-bottom: 1px solid #dee2e6;
+  color: #212529; /* Standardowy kolor tekstu */
+}
+
+.task-table th {
+  background-color: #343a40 !important;
+  color: white !important;
+}
+
+.task-table tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+.badge.bg-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107;
+  color: black;
+}
+
+.badge.bg-info {
+  background-color: #17a2b8;
+  color: black;
+}
+
+.badge.bg-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.task-table td.text-danger {
+  font-weight: bold;
+}
+
+.btn-custom-blue {
+  background-color: #007bff !important;
+  border-color: #007bff !important;
+  color: white !important;
+  border-radius: 10px; /* Możesz zmienić wartość */
+
+}
+
+.custom-button {
+  background-color: rgb(40, 167, 69) ; /* Zielony kolor wymuszony */
+  color: white !important;
+  font-size: 16px !important;
+  border-radius: 5px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 5px 10px;
+}
+
+/* Usuwa linie podziału w tabeli */
+.task-table.no-borders {
+  border-collapse: separate !important; /* Zapobiega łączeniu obramowań */
+  border-spacing: 0 !important; /* Usuwa odstępy między komórkami */
+}
+
+/* Usuwa obramowania ze wszystkich komórek */
+.task-table.no-borders th,
+.task-table.no-borders td {
+  border: none !important; /* Usuwa linie między komórkami */
+  background: none !important; /* Zapobiega kolorowym liniom */
+}
+
+/* Usunięcie podziałek w nagłówkach */
+.task-table.no-borders thead th {
+  border-bottom: none !important; /* Usuwa linię pod nagłówkami */
+  background: none !important;
+}
+
+/* Opcjonalnie: Jeśli Bootstrap nadal dodaje podziałki */
+.table-bordered thead th {
+  border-bottom: none !important;
+}
+h2,h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #343a40 !important;
+  margin-bottom: 20px;
+  padding: 10px;
+  background: #f8f9fa;
+  border-left: 5px solid #ffc107;
+  border-radius: 5px;
+  text-align: left;
+}

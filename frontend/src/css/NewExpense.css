@@ -1,0 +1,42 @@
+/* Stylizacja kontenera głównego */
+.expense-form-container {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+/* Stylizacja nagłówka */
+.expense-form-container h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    color: #343a40;
+    margin-bottom: 20px;
+}
+
+/* Stylizacja formularza */
+.expense-form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Stylizacja przycisku zapisu */
+.expense-form-container .btn-primary {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background-color: #007bff;
+    border: none;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.expense-form-container .btn-primary:hover {
+    background-color: #0056b3;
+}

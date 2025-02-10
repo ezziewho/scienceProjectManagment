@@ -17,6 +17,9 @@ import {
   uploadTaskDocument,
   uploadTeamDocument,
   getExpenseModels,
+  getAllFilesAdmin,
+  deleteFile,
+  downloadFile,
 } from "../controllers/documentController.js";
 
 const router = express.Router();
@@ -43,11 +46,10 @@ router.get("/files/expense/:category/:expense_id", getExpenseFiles);
 
 router.get("/files/expense/", getExpenseModels);
 router.get("/files/category/:filetable_category", getFilesByCategory);
-/*router.post(
-  "/upload/:filetable_category",
-  upload.single("file"),
-  uploadDocument
-);*/
+
+router.get("/files/admin", getAllFilesAdmin);
+router.delete("/delete/admin/:category/:fileId", deleteFile);
+router.post("/download/admin/:category/:fileId", downloadFile);
 
 router.get("/files", getAllTaskFiles); // Pobiera wszystkie pliki
 router.get("/files/task/:taskId", getTaskFiles); // Pobiera pliki dla task_id

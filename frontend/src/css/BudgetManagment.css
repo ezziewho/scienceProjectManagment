@@ -1,0 +1,121 @@
+/* Tło strony z zamglonym obrazem */
+.budget-container {
+    background: url('../images/tlo.jpg') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+    min-height: 100vh;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* Nakładka rozjaśniająca i rozmywająca obraz */
+.budget-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 0;
+}
+
+/* Nagłówek */
+.budget-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #343a40;
+    position: relative;
+    z-index: 3;
+}
+
+/* Opis */
+.budget-description {
+    font-size: 1rem;
+    text-align: center;
+    color: #42474c;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 3;
+}
+
+/* Karty budżetowe */
+.budget-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+    cursor: pointer;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    z-index: 3;
+}
+
+/* Efekt hover na kartach */
+.budget-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Nagłówki kart */
+.budget-card-title {
+    font-size: 1.25rem;
+    
+    color: #343a40;
+}
+
+/* Opis w kartach */
+.budget-card-text {
+    font-size: 0.95rem;
+    color: #6c757d;
+    margin-bottom: 15px;
+}
+
+/* Kontener na boxy */
+.budget-card-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px;
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+/* Przyciski */
+.budget-btn {
+    font-size: 1rem;
+    padding: 10px 15px;
+    border-radius: 8px;
+    width: 100%;
+    font-weight: bold;
+}
+
+.budget-btn-primary {
+    background: #007bff;
+    border: none;
+    color: white;
+}
+
+.budget-btn-primary:hover {
+    background: #0056b3;
+}
+
+.budget-btn-secondary {
+    background: #6c757d;
+    border: none;
+    color: white;
+}
+
+.budget-btn-secondary:hover {
+    background: #545b62;
+}

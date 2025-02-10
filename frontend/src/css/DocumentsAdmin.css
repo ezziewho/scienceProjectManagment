@@ -1,0 +1,162 @@
+/* Główne tło - spójne z innymi sekcjami */
+.task-documents-container {
+    background: url('../images/tlo.jpg') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
+    min-height: 100vh;
+    height: 100%;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.task-documents-panel {
+    margin-top: 0;
+    padding: 0;
+}
+
+
+/* Stylizacja nagłówka sekcji */
+.task-documents-header {
+    background-color: #343a40;
+    color: white;
+    font-weight: bold;
+    padding: 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    text-align: left;
+    font-size: 1.2rem;
+}
+
+/* Stylizacja nagłówka w sekcji */
+.task-documents-section h2, .task-documents-section h3 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #343a40;
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-left: 5px solid #ffc107;
+    border-radius: 5px;
+    text-align: left;
+}
+.task-documents-section .file-actions {
+    display: flex;
+    gap: 5px;
+    justify-content: flex-end !important;
+}
+
+
+/* Pudełka dla sekcji Upload i Files */
+.task-documents-section {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    top: -100px;
+    z-index: 1;
+    max-width: 1200px;
+    width: 150%;
+    
+}
+
+.task-documents-section2 {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    top: -500px;
+    z-index: 1;
+    max-width: 1200px;
+    width: 150%;
+    
+}
+
+.task-documents-section:second-of-type {
+    position: relative;
+    top: -500px; /* Podnosi tylko pierwsze pudełko */
+}
+
+
+/* Stylizacja nagłówka */
+.task-documents-section h3 {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #343a40;
+    margin-bottom: 20px;
+}
+
+/* Stylizacja formularza */
+.task-documents-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Stylizacja pól formularza */
+.task-documents-section .form-control {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    font-size: 1rem;
+}
+
+/* Stylizacja przycisków */
+.task-documents-section .btn-primary {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 1.1rem;
+    background-color: #ffc107;
+    border: none;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.task-documents-section .btn-primary:hover {
+    background-color: #e0a800;
+}
+
+.task-documents-section .btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 8px;
+}
+
+.task-documents-section .btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+/* Stylizacja listy plików */
+.task-documents-section .list-group-item {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    
+}
+
+/* Przycisk usuwania i pobierania */
+.task-documents-section .btn-sm {
+    padding: 5px 10px;
+}
+
+.task-documents-section .btn-sm {
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+}
+.task-documents-section .btn-sm svg {
+    width: 16px;
+    height: 16px;
+}
+

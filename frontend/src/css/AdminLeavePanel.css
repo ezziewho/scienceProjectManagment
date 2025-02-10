@@ -1,0 +1,127 @@
+/* 🌟 Tło strony z zamglonym obrazem */
+.leave-container {
+    background: url('../images/tlo.jpg') no-repeat center center fixed; /* Obraz jako tło */
+    background-size: cover; /* Dopasowanie tła */
+    position: relative; /* Pozycjonowanie dla nakładki */
+    min-height: 100vh; /* Wysokość strony */
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 🌫️ Nakładka rozjaśniająca i rozmywająca obraz */
+.leave-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6); /* Półprzezroczysta biała nakładka */
+    backdrop-filter: blur(8px); /* Efekt rozmycia */
+    z-index: 0; /* Nakładka znajduje się za treścią */
+}
+
+/* 🎯 Upewnienie się, że zawartość nie jest pod nakładką */
+.leave-container > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* 📌 Nagłówek */
+.leave-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #343a40;
+}
+
+/* 🎯 Stylizacja filtrów */
+.filters {
+    margin-bottom: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.filters input,
+.filters select {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 14px;
+    width: 40%;
+}
+
+.filters input:focus,
+.filters select:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* 📊 Stylizacja tabeli */
+.leave-table {
+    width: 100%;
+    max-width: 900px;
+    border-collapse: collapse;
+    background: rgba(255, 255, 255, 0.8); /* Półprzezroczyste tło */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+/* 🎨 Nagłówki tabeli */
+.leave-table th,
+.leave-table td {
+    text-align: left;
+    padding: 12px;
+    border-bottom: 1px solid #dee2e6;
+    color: #212529;
+}
+
+.leave-table th {
+    background-color: #343a40;
+    color: white;
+}
+
+/* 🌟 Efekt podświetlenia wiersza */
+.leave-table tr:hover {
+    background-color: rgba(241, 241, 241, 0.8);
+    cursor: pointer;
+}
+
+/* 🏷️ Stylizacja statusów */
+.badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.badge.approved {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge.pending {
+    background-color: #ffc107;
+    color: black;
+}
+
+.badge.rejected {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* 🎯 Stylizacja kolumny "Actions" */
+.actions-column {
+    text-align: center;
+}
+
+/* 🎨 Przyciski */
+.btn-warning {
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    color: black !important;
+}

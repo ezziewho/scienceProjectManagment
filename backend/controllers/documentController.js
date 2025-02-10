@@ -90,7 +90,6 @@ export const uploadTaskDocument = async (req, res) => {
       body: fs.createReadStream(filePath),
     };
 
-    // Przesyłanie pliku do Google Drive
     const driveResponse = await drive.files.create({
       resource: fileMetadata,
       media,
@@ -186,78 +185,6 @@ export const uploadTeamDocument = async (req, res) => {
   }
 };
 
-/*
-export const uploadDocument = async (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).json({ error: "Brak pliku do przesłania." });
-    }
-
-    if (!req.body.task_id && !req.body.user_id) {
-      return res.status(400).json({
-        error: "Brak wymaganych identyfikatorów (task_id lub user_id).",
-      });
-    }
-
-    const filePath = path.join(__dirname, "../uploads", req.file.filename);
-    const fileMetadata = {
-      name: req.file.originalname,
-      parents: [GOOGLE_DRIVE_FOLDER_ID],
-    };
-    const media = {
-      mimeType: req.file.mimetype,
-      body: fs.createReadStream(filePath),
-    };
-
-    // Przesyłanie pliku do Google Drive
-    const driveResponse = await drive.files.create({
-      resource: fileMetadata,
-      media,
-      fields: "id, webViewLink",
-    });
-
-    fs.unlinkSync(filePath); // Usuwamy plik lokalny po przesłaniu
-
-    const filetable_category = req.params.filetable_category; // Pobieramy kategorię z URL
-
-    let savedFile = null;
-
-    if (filetable_category === "task_files") {
-      savedFile = await TaskFile.create({
-        file_name: req.file.originalname,
-        file_path: driveResponse.data.webViewLink,
-        task_id: req.body.task_id,
-        uploaded_by: req.body.user_id,
-        description: req.body.description || null,
-      });
-    } else if (filetable_category === "team_files") {
-      savedFile = await TeamFile.create({
-        file_name: req.file.originalname,
-        file_path: driveResponse.data.webViewLink,
-        user_id: req.body.user_id,
-        uploaded_by: req.body.user_id,
-        description: req.body.description || null,
-      });
-    } else {
-      return res.status(400).json({ error: "Niepoprawna kategoria plików." });
-    }
-
-    res.json({
-      message: "Plik przesłany i zapisany w bazie!",
-      file: {
-        fileId: driveResponse.data.id,
-        fileUrl: driveResponse.data.webViewLink,
-        fileName: req.file.originalname,
-        description: savedFile.description,
-        uploadedBy: savedFile.uploaded_by,
-      },
-    });
-  } catch (error) {
-    console.error("Błąd przesyłania pliku:", error);
-    res.status(500).json({ error: "Błąd przesyłania pliku do Google Drive." });
-  }
-};
-*/
 export const getTaskFiles = async (req, res) => {
   try {
     const { taskId } = req.params;
@@ -685,5 +612,136 @@ export const deleteExpenseFile = async (req, res) => {
   } catch (error) {
     console.error("Błąd usuwania pliku:", error);
     res.status(500).json({ error: "Nie udało się usunąć pliku." });
+  }
+};
+//ADMIN
+export const getAllFilesAdmin = async (req, res) => {
+  try {
+    const taskFiles = await TaskFile.findAll();
+    const teamFiles = await TeamFile.findAll();
+    const expenseFiles = await ExpenseFile.findAll();
+
+    const allFiles = [
+      ...taskFiles.map((file) => ({
+        ...file.dataValues,
+        file_table_category: "task",
+      })),
+      ...teamFiles.map((file) => ({
+        ...file.dataValues,
+        file_table_category: "team",
+      })),
+      ...expenseFiles.map((file) => ({
+        ...file.dataValues,
+        file_table_category: "expense",
+      })),
+    ];
+
+    res.json(allFiles);
+  } catch (error) {
+    console.error("Błąd pobierania wszystkich plików:", error);
+    res.status(500).json({ error: "Błąd serwera" });
+  }
+};
+
+export const deleteFile = async (req, res) => {
+  try {
+    const { fileId, category } = req.params;
+
+    // Mapa tabel na modele Sequelize
+    const fileModels = {
+      task: TaskFile,
+      team: TeamFile,
+      budget: ExpenseFile,
+    };
+
+    const Model = fileModels[category];
+
+    if (!Model) {
+      return res.status(400).json({ error: "Nieprawidłowa kategoria plików." });
+    }
+
+    // Znalezienie pliku w bazie
+    const file = await Model.findByPk(fileId);
+    if (!file) {
+      return res.status(404).json({ error: "Plik nie istnieje." });
+    }
+
+    // Pobranie Google Drive ID
+    const extractFileId = (url) => {
+      const match = url.match(/\/d\/(.*)\//);
+      return match ? match[1] : null;
+    };
+
+    const driveFileId = extractFileId(file.file_path);
+    if (driveFileId) {
+      await drive.files.delete({ fileId: driveFileId });
+    }
+
+    // Usunięcie wpisu z bazy danych
+    await file.destroy();
+
+    res.json({ message: "Plik został usunięty z bazy i Google Drive." });
+  } catch (error) {
+    console.error("Błąd usuwania pliku:", error);
+    res.status(500).json({ error: "Nie udało się usunąć pliku." });
+  }
+};
+
+export const downloadFile = async (req, res) => {
+  try {
+    const { fileId, category } = req.params;
+
+    const fileModels = {
+      task: TaskFile,
+      team: TeamFile,
+      budget: ExpenseFile,
+    };
+
+    const Model = fileModels[category];
+
+    // Pobieramy plik z bazy danych na podstawie fileId
+    const file = await Model.findByPk(fileId);
+    if (!file) {
+      return res.status(404).json({ error: "Plik nie istnieje w bazie." });
+    }
+
+    // Funkcja do wyodrębnienia ID z linku Google Drive
+    const extractFileId = (url) => {
+      const match = url.match(/\/d\/(.*)\//);
+      return match ? match[1] : null;
+    };
+
+    // Pobranie właściwego fileId z URL-a w bazie
+    const driveFileId = extractFileId(file.file_path);
+    if (!driveFileId) {
+      return res
+        .status(400)
+        .json({ error: "Nieprawidłowy link do pliku w Google Drive." });
+    }
+
+    // Pobranie pliku jako strumień z Google Drive
+    const driveFile = await drive.files.get(
+      { fileId: driveFileId, alt: "media" },
+      { responseType: "stream" }
+    );
+
+    // Ustawienie odpowiednich nagłówków
+    res.setHeader("Content-Type", driveFile.headers["content-type"]);
+    res.setHeader(
+      "Content-Disposition",
+      `inline; filename="${file.file_name}"`
+    );
+
+    // Przesyłanie pliku do użytkownika
+    driveFile.data.pipe(res);
+  } catch (error) {
+    console.error("Błąd pobierania pliku:", error);
+
+    // Obsługa błędów Google Drive (np. brak dostępu)
+    if (error.response && error.response.status === 403) {
+      return res.status(403).json({ error: "Brak dostępu do pliku." });
+    }
+
+    res.status(500).json({ error: "Nie udało się pobrać pliku." });
   }
 };
