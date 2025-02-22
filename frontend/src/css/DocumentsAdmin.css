@@ -57,7 +57,7 @@
     padding: 30px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     position: relative;
-    top: -100px;
+
     z-index: 1;
     max-width: 1200px;
     width: 150%;

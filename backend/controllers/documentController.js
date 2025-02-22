@@ -19,6 +19,9 @@ import {
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+//const __filename = __filename || __dirname; // Alternatywne podejście
+//const __dirname = path.resolve();
+
 const GOOGLE_DRIVE_FOLDER_ID = "1lzdTpFLoje5adS5_8jPxOfGNC_Klo8R7";
 
 const fileModels = {
@@ -78,7 +81,12 @@ export const uploadTaskDocument = async (req, res) => {
       });
     }
 
-    const filePath = path.join(__dirname, "../uploads", req.file.filename);
+    //const filePath = path.join(__dirname, "../uploads", req.file.filename);
+    let filePath = null;
+
+    if (!req.file.buffer) {
+      filePath = path.join(__dirname, "../uploads", req.file.filename);
+    }
 
     const fileMetadata = {
       name: req.file.originalname,
@@ -87,7 +95,12 @@ export const uploadTaskDocument = async (req, res) => {
 
     const media = {
       mimeType: req.file.mimetype,
-      body: fs.createReadStream(filePath),
+      //body: fs.createReadStream(filePath),
+      body: req.file.buffer
+        ? Buffer.from(req.file.buffer) // ✅ Use buffer for `memoryStorage()`
+        : fs.createReadStream(
+            path.join(__dirname, "../uploads", req.file.filename)
+          ), // ✅ Use file path for `diskStorage()`
     };
 
     const driveResponse = await drive.files.create({
@@ -95,9 +108,11 @@ export const uploadTaskDocument = async (req, res) => {
       media,
       fields: "id, webViewLink",
     });
-
-    fs.unlinkSync(filePath); // Usuwamy plik lokalny po przesłaniu
-
+    if (filePath) {
+      fs.unlinkSync(filePath); // Usuwamy plik lokalny po przesłaniu
+    }
+    console.log("📂 req.file:", req.file);
+    console.log("📂 req.file.filename:", req.file?.originalname);
     // Zapis pliku w bazie danych
     const savedFile = await TaskFile.create({
       file_name: req.file.originalname,
@@ -136,8 +151,12 @@ export const uploadTeamDocument = async (req, res) => {
         error: "Brak wymaganych identyfikatorów (user_id).",
       });
     }
+    let filePath = null;
 
-    const filePath = path.join(__dirname, "../uploads", req.file.filename);
+    if (!req.file.buffer) {
+      filePath = path.join(__dirname, "../uploads", req.file.filename);
+    }
+    //const filePath = path.join(__dirname, "../uploads", req.file.filename);
 
     const fileMetadata = {
       name: req.file.originalname,
@@ -146,7 +165,12 @@ export const uploadTeamDocument = async (req, res) => {
 
     const media = {
       mimeType: req.file.mimetype,
-      body: fs.createReadStream(filePath),
+      //body: fs.createReadStream(filePath),
+      body: req.file.buffer
+        ? Buffer.from(req.file.buffer)
+        : fs.createReadStream(
+            path.join(__dirname, "../uploads", req.file.filename)
+          ),
     };
 
     // Przesyłanie pliku do Google Drive
@@ -156,7 +180,9 @@ export const uploadTeamDocument = async (req, res) => {
       fields: "id, webViewLink",
     });
 
-    fs.unlinkSync(filePath); // Usuwamy plik lokalny po przesłaniu
+    if (filePath) {
+      fs.unlinkSync(filePath); // Usuwamy plik lokalny po przesłaniu
+    }
 
     // Zapis pliku w bazie danych
     const savedFile = await TeamFile.create({
@@ -478,7 +504,11 @@ export const uploadExpenseDocument = async (req, res) => {
       `📌 Przetwarzanie pliku dla expense_id: ${expense_id}, category: ${category}, uploaded_by: ${uploaded_by}`
     );
 
-    const filePath = path.join(__dirname, "../uploads", req.file.filename);
+    let filePath = null;
+
+    if (!req.file.buffer) {
+      filePath = path.join(__dirname, "../uploads", req.file.filename);
+    }
 
     let uploadedFileUrl = null;
 
@@ -490,7 +520,12 @@ export const uploadExpenseDocument = async (req, res) => {
         };
         const media = {
           mimeType: req.file.mimetype,
-          body: fs.createReadStream(filePath),
+          //body: fs.createReadStream(filePath),
+          body: req.file.buffer
+            ? Buffer.from(req.file.buffer)
+            : fs.createReadStream(
+                path.join(__dirname, "../uploads", req.file.filename)
+              ),
         };
 
         const driveResponse = await drive.files.create({
@@ -500,9 +535,9 @@ export const uploadExpenseDocument = async (req, res) => {
         });
 
         uploadedFileUrl = driveResponse.data.webViewLink;
-
-        fs.unlinkSync(filePath);
-        console.log("🗑️ Plik lokalny usunięty:", filePath);
+        if (filePath) {
+          fs.unlinkSync(filePath); // Usuwamy plik lokalny po przesłaniu
+        }
       } catch (error) {
         console.error(
           "❌ Błąd usuwania pliku lub przesyłania na Google Drive:",

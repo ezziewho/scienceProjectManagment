@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useAuth } from "../../hooks/AuthContext"; // Fetching user data
-import "../../css/TaskDocuments.css";
+import "../../css/DocumentsAdmin.css";
 import { IconDownload, IconTrash, IconEdit } from "@tabler/icons-react";
 
 const TaskAdminFile = () => {

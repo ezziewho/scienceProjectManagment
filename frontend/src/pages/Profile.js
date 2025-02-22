@@ -32,7 +32,7 @@ function Profile() {
   const [showEditModal, setShowEditModal] = useState(false);
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-
+  let position = "PI";
   useEffect(() => {
     const getUserData = async () => {
       if (!currentUser?.id) return;
@@ -128,7 +128,7 @@ function Profile() {
                 <strong>Role:</strong> {userData?.role}
               </p>
               <p>
-                <strong>Position:</strong> {userData?.role}
+                <strong>Position:</strong> {position}
               </p>
               <p>
                 <strong>Password:</strong> ●●●●●●●●●
@@ -258,6 +258,15 @@ function Profile() {
           userData={userData}
           onClose={() => setShowEditModal(false)}
           onSave={handleSaveUserData}
+        />
+      )}
+      {/* Modal zgłoszenia urlopu */}
+      {showLeaveModal && (
+        <RequestLeaveModal
+          onClose={() => setShowLeaveModal(false)}
+          onSuccess={(newLeave) => {
+            setLeaveRequests([...leaveRequests, newLeave]); // Aktualizacja listy urlopów
+          }}
         />
       )}
     </div>

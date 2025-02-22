@@ -4,11 +4,16 @@ export const checkAuth = (req, res) => {
   //console.log("CHUJEK Session data:", req.session); // Debug session data
   if (req.session.userId) {
     // User is logged in, return role and userId
-    return res.json({
+    const responseData = {
       valid: true,
       role: req.session.role || "visitor", // Default role to "visitor" if undefined
       userId: req.session.userId,
-    });
+    };
+
+    //console.log("🔍 Response being sent:", responseData);
+    //console.log("🔍 Response being sent:", responseData.body);
+
+    return res.json(responseData);
   } else {
     // User is not logged in
     return res.json({ valid: false });
@@ -17,7 +22,7 @@ export const checkAuth = (req, res) => {
 
 export const getUsers = async (req, res) => {
   try {
-    console.log("Session data:", req.session); // Log sesji dla debugowania
+    //console.log("Session data:", req.session); // Log sesji dla debugowania
     const userId = req.session.userId; // Pobranie userId z sesji
     const userRole = req.session.role; // Pobranie roli użytkownika z sesji
 
@@ -41,14 +46,14 @@ export const getUsers = async (req, res) => {
     // Zwróć listę użytkowników
     res.status(200).json(formattedUsers);
   } catch (error) {
-    console.error("Error fetching users:", error);
+    //console.error("Error fetching users:", error);
     res.status(500).json({ error: "Error fetching users" });
   }
 };
 
 export const getUserById = async (req, res) => {
   try {
-    console.log("Session data:", req.session); // Log sesji dla debugowania
+    //console.log("Session data:", req.session); // Log sesji dla debugowania
     const userId = req.session.userId; // Pobranie userId z sesji
 
     if (!userId) {
@@ -69,7 +74,7 @@ export const getUserById = async (req, res) => {
 
     res.status(200).json(user);
   } catch (error) {
-    console.error("Error fetching user:", error);
+    //console.error("Error fetching user:", error);
     res.status(500).json({ error: "Error fetching user" });
   }
 };
@@ -77,7 +82,7 @@ export const getUserById = async (req, res) => {
 export const addUser = async (req, res) => {
   try {
     const { name, email, role } = req.body;
-    console.log("Incoming request body:", req.body);
+    //console.log("Incoming request body:", req.body);
     // Walidacja danych wejściowych
     if (!name || !email || !role) {
       return res.status(400).json({ error: "All fields are required." });
@@ -87,7 +92,7 @@ export const addUser = async (req, res) => {
     const newUser = await User.create({ name, email, role });
     res.status(201).json(newUser); // Zwracamy nowo utworzonego użytkownika
   } catch (error) {
-    console.error("Error adding user:", error);
+    //console.error("Error adding user:", error);
     if (error.name === "SequelizeUniqueConstraintError") {
       return res.status(400).json({ error: "Email already exists." });
     }
@@ -114,7 +119,7 @@ export const updateUser = async (req, res) => {
 
     res.status(200).json(user); // Zwracamy zaktualizowanego użytkownika
   } catch (error) {
-    console.error("Error updating user:", error);
+    //console.error("Error updating user:", error);
     res.status(500).json({ error: "Failed to update user." });
   }
 };
@@ -133,7 +138,7 @@ export const deleteUser = async (req, res) => {
     await user.destroy();
     res.status(204).send(); // Zwracamy status 204 bez treści
   } catch (error) {
-    console.error("Error deleting user:", error);
+    //console.error("Error deleting user:", error);
     res.status(500).json({ error: "Failed to delete user." });
   }
 };

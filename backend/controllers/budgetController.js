@@ -75,15 +75,21 @@ export const approveExpense = async (req, res) => {
       `📌 Próba zatwierdzenia wydatku ID: ${id} w kategorii: ${category}`
     );
 
-    const user = await User.findByPk(req.user.id);
+    const user = await User.findByPk(req.session.userId, {
+      attributes: ["id", "role"], // ✅ Pobieramy tylko ID i role
+    });
+
+    console.log("🔍 Pobranie użytkownika:", req.session.userId);
+    /*
     if (!user) {
       console.warn("⚠️ Użytkownik nie znaleziony w bazie.");
       return res.status(401).json({ error: "Nieautoryzowany użytkownik." });
     }
-
-    if (user.role !== "admin") {
+*/
+    console.warn("Headersllo oto id z sesji,", req.session.userId);
+    if (req.session.role !== "admin") {
       console.warn(
-        `⚠️ Użytkownik ID: ${user.id} nie ma uprawnień do zatwierdzania wydatków.`
+        `⚠️ Użytkownik ID: ${req.session.userId} i rolą:  ${req.session.role}  nie ma uprawnień do zatwierdzania wydatków.`
       );
       return res
         .status(403)
@@ -105,7 +111,7 @@ export const approveExpense = async (req, res) => {
     expense.status = "approved";
     await expense.save();
     console.log(
-      `✅ Wydatek ID: ${id} został zatwierdzony przez użytkownika ID: ${user.id}`
+      `✅ Wydatek ID: ${id} został zatwierdzony przez użytkownika ID: ${req.session.userId}`
     );
 
     res.json({ message: "Wydatek zatwierdzony" });
