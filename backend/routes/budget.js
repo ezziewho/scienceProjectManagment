@@ -15,10 +15,10 @@ router.get("/summary", isAuthenticated, getBudgetSummary);
 router.get("/planned", isAuthenticated, getPlannedBudget);
 // Zatwierdzanie wydatku przez administratora (isAdmin)
 router.put("/approve", /*isAuthenticated, isAdmin,*/ approveExpense);
-router.get("/:category", isAuthenticated, getExpensesByCategory);
+router.get("/:expense_category", isAuthenticated, getExpensesByCategory);
 
 // Tworzenie nowego wydatku
-router.post("/create", isAuthenticated, createExpense);
+router.post("/new/create", isAuthenticated, createExpense);
 
 router.put("/:id", editPlannedBudget); // Aktualizacja wpisu budżetu
 

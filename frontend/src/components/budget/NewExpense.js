@@ -44,7 +44,7 @@ const NewExpense = () => {
 
       // Dane do pierwszego requesta (bez pliku)
       const requestData = {
-        cat: section,
+        expense_category: section,
         user_id: String(currentUser.id),
         ...otherData,
       };
@@ -53,7 +53,7 @@ const NewExpense = () => {
 
       // ✅ 1️⃣ Wysyłamy dane wydatku do `/budget/create`
       const response = await axios.post(
-        "http://localhost:8081/budget/create",
+        "http://localhost:8081/budget/new/create",
         requestData,
         {
           headers: { "Content-Type": "application/json" },
@@ -71,7 +71,7 @@ const NewExpense = () => {
 
           const formDataUpload = new FormData();
           formDataUpload.append("expense_id", response.data.id);
-          formDataUpload.append("category", section);
+          formDataUpload.append("expense_category", section);
           formDataUpload.append("file", file);
           formDataUpload.append("file_description", file_description || "");
           formDataUpload.append("uploaded_by", currentUser.id);
@@ -101,7 +101,7 @@ const NewExpense = () => {
         // Czyszczenie draftu i przekierowanie
         localStorage.removeItem("draftExpense");
         sessionStorage.removeItem("expenseFile");
-        navigate("/expenses/list");
+        //navigate("/expenses/list");
       } else {
         console.error("❌ Błąd zapisu wydatku. Status:", response.status);
       }

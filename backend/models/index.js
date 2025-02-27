@@ -17,6 +17,7 @@ import TravelCosts from "./budgetModels/TravelCosts.js";
 import Others from "./budgetModels/Others.js";
 import ExpenseFile from "./documentModels/ExpenseFile.js";
 import TeamFile from "./documentModels/TeamFile.js";
+import Team from "./Team.js";
 
 // Export models and Sequelize instance
 export {
@@ -37,4 +38,5 @@ export {
   PlannedBudget,
   TaskFile,
   TeamFile,
+  Team,
 };

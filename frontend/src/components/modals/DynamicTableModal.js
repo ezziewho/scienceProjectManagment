@@ -55,7 +55,7 @@ const DynamicTableModal = ({
     try {
       const response = await axios.put(
         "http://localhost:8081/budget/approve",
-        { id: row.id, category: row.category },
+        { id: row.id, expense_category: row.expense_category },
         { withCredentials: true }
       );
       alert(response.data.message || "Wydatek zatwierdzony!");

@@ -426,7 +426,7 @@ describe("Document Controller", () => {
         file_name: mockFile.originalname,
         file_path: mockDriveResponse.data.webViewLink,
         expense_id: 1,
-        category: "equipment",
+        expense_category: "equipment",
         uploaded_by: 1,
         description: null,
       });
@@ -434,7 +434,7 @@ describe("Document Controller", () => {
       const response = await request(testApp)
         .post("/upload/expense")
         .field("expense_id", 1)
-        .field("category", "equipment")
+        .field("expense_category", "equipment")
         .field("uploaded_by", 1)
         .attach("file", Buffer.from("test content"), mockFile.originalname);
 

@@ -24,12 +24,12 @@ const expenseModels = {
 // Pobieranie wydatków według kategorii
 export const getExpensesByCategory = async (req, res) => {
   try {
-    const { category } = req.params;
-    console.log(`📌 Pobieranie wydatków dla kategorii: ${category}`);
+    const { expense_category } = req.params;
+    console.log(`📌 Pobieranie wydatków dla kategorii: ${expense_category}`);
 
-    const Model = expenseModels[category];
+    const Model = expenseModels[expense_category];
     if (!Model) {
-      console.warn(`⚠️ Nieprawidłowa kategoria: ${category}`);
+      console.warn(`⚠️ Nieprawidłowa kategoria: ${expense_category}`);
       return res.status(400).json({ error: "Nieprawidłowa kategoria" });
     }
 
@@ -47,14 +47,14 @@ export const getExpensesByCategory = async (req, res) => {
 // Tworzenie wydatku w dowolnej kategorii
 export const createExpense = async (req, res) => {
   try {
-    const { category, ...expenseData } = req.body;
+    const { expense_category, ...expenseData } = req.body;
     console.log(
-      `📌 Tworzenie nowego wydatku w kategorii: ${category}, ${req.body.user_id}`
+      `📌 Tworzenie nowego wydatku w kategorii: ${expense_category}, ${req.body.user_id}`
     );
 
-    const Model = expenseModels[category];
+    const Model = expenseModels[expense_category];
     if (!Model) {
-      console.warn(`⚠️ Nieprawidłowa kategoria: ${category}`);
+      console.warn(`⚠️ Nieprawidłowa kategoria: ${expense_category}`);
       return res.status(400).json({ error: "Nieprawidłowa kategoria" });
     }
 
@@ -70,9 +70,9 @@ export const createExpense = async (req, res) => {
 // Zatwierdzanie wydatku przez PI
 export const approveExpense = async (req, res) => {
   try {
-    const { id, category } = req.body;
+    const { id, expense_category } = req.body;
     console.log(
-      `📌 Próba zatwierdzenia wydatku ID: ${id} w kategorii: ${category}`
+      `📌 Próba zatwierdzenia wydatku ID: ${id} w kategorii: ${expense_category}`
     );
 
     const user = await User.findByPk(req.session.userId, {
@@ -96,9 +96,9 @@ export const approveExpense = async (req, res) => {
         .json({ error: "Brak uprawnień do zatwierdzania wydatków" });
     }
 
-    const Model = expenseModels[category];
+    const Model = expenseModels[expense_category];
     if (!Model) {
-      console.warn(`⚠️ Nieprawidłowa kategoria: ${category}`);
+      console.warn(`⚠️ Nieprawidłowa kategoria: ${expense_category}`);
       return res.status(400).json({ error: "Nieprawidłowa kategoria" });
     }
 
@@ -127,25 +127,25 @@ export const getBudgetSummary = async (req, res) => {
 
     let budgetSummary = [];
 
-    for (const [category, Model] of Object.entries(expenseModels)) {
-      console.log(`🔍 Przetwarzanie kategorii: ${category}`);
+    for (const [expense_category, Model] of Object.entries(expenseModels)) {
+      console.log(`🔍 Przetwarzanie kategorii: ${expense_category}`);
 
       let actualCosts = 0;
 
-      if (category === "salaries") {
+      if (expense_category === "salaries") {
         console.log("🟢 Liczenie wynagrodzeń...");
         const salaries = await Model.findAll();
         actualCosts = salaries.reduce((sum, salary) => {
           return sum + salary.duration_months * salary.monthly_salary;
         }, 0);
       } else {
-        console.log(`🟢 Sumowanie total_costs dla ${category}...`);
+        console.log(`🟢 Sumowanie total_costs dla ${expense_category}...`);
         const result = await Model.sum("total_cost");
         actualCosts = result || 0; // Jeśli brak danych, zwracamy 0
       }
 
       budgetSummary.push({
-        category: category.replace("_", " ").toUpperCase(), // Formatowanie nazwy
+        expense_category: expense_category.replace("_", " ").toUpperCase(), // Formatowanie nazwy
         actual_costs: actualCosts,
       });
     }
@@ -158,7 +158,7 @@ export const getBudgetSummary = async (req, res) => {
 
     // Dodanie sumy do budżetu
     budgetSummary.push({
-      category: "TOTAL",
+      expense_category: "TOTAL",
       actual_costs: totalActualCosts,
     });
 
@@ -177,23 +177,25 @@ export const getBudgetSummaryDirectly = async () => {
 
     let budgetSummary = [];
 
-    for (const [category, Model] of Object.entries(expenseModels)) {
+    for (const [expense_category, Model] of Object.entries(expenseModels)) {
       let actualCosts = 0;
 
-      if (category === "salaries") {
-        console.log(`🟢 Liczenie wynagrodzeń dla kategorii ${category}...`);
+      if (expense_category === "salaries") {
+        console.log(
+          `🟢 Liczenie wynagrodzeń dla kategorii ${expense_category}...`
+        );
         const salaries = await Model.findAll();
         actualCosts = salaries.reduce((sum, salary) => {
           return sum + salary.duration_months * salary.monthly_salary;
         }, 0);
       } else {
-        console.log(`🟢 Sumowanie total_costs dla ${category}...`);
+        console.log(`🟢 Sumowanie total_costs dla ${expense_category}...`);
         const result = await Model.sum("total_cost");
         actualCosts = result || 0; // Jeśli brak danych, zwracamy 0
       }
 
       budgetSummary.push({
-        category: category.replace("_", " ").toUpperCase(),
+        expense_category: expense_category.replace("_", " ").toUpperCase(),
         actual_costs: actualCosts,
         planned_costs: 0, // Planned costs zostaną uzupełnione później
       });
@@ -211,7 +213,7 @@ export const getBudgetSummaryDirectly = async () => {
 
     // Dodanie podsumowania do listy
     budgetSummary.push({
-      category: "TOTAL",
+      expense_category: "TOTAL",
       actual_costs: totalActualCosts,
       planned_costs: totalPlannedCosts,
     });
@@ -241,18 +243,20 @@ export const updatePlannedBudget = async () => {
     // Aktualizacja każdej kategorii w planned_budget
     for (const item of budgetSummary) {
       try {
-        const formattedCategory = item.category.toLowerCase().replace(" ", "_");
+        const formattedCategory = item.expense_category
+          .toLowerCase()
+          .replace(" ", "_");
 
         await PlannedBudget.update(
           {
             actual_costs: item.actual_costs,
             difference: item.planned_costs - item.actual_costs,
           },
-          { where: { category: formattedCategory } }
+          { where: { expense_category: formattedCategory } }
         );
 
         console.log(
-          `✅ Zaktualizowano kategorię: ${item.category} (Actual: ${
+          `✅ Zaktualizowano kategorię: ${item.expense_category} (Actual: ${
             item.actual_costs
           }, Planned: ${item.planned_costs}, Difference: ${
             item.planned_costs - item.actual_costs
@@ -260,7 +264,7 @@ export const updatePlannedBudget = async () => {
         );
       } catch (updateError) {
         console.error(
-          `❌ Błąd aktualizacji dla kategorii: ${item.category}`,
+          `❌ Błąd aktualizacji dla kategorii: ${item.expense_category}`,
           updateError
         );
       }
@@ -286,7 +290,13 @@ export const getPlannedBudget = async (req, res) => {
 
     // Pobieramy aktualne dane z planned_budget, tylko potrzebne pola
     const plannedBudget = await PlannedBudget.findAll({
-      attributes: ["id", "category", "planned_costs", "actual_costs", "notes"], // Tylko wybrane pola
+      attributes: [
+        "id",
+        "expense_category",
+        "planned_costs",
+        "actual_costs",
+        "notes",
+      ], // Tylko wybrane pola
     });
 
     // Obliczanie sum dla total
@@ -302,7 +312,7 @@ export const getPlannedBudget = async (req, res) => {
 
     // Dodanie kategorii "total" jako ostatni wpis
     const totalEntry = {
-      category: "total",
+      expense_category: "total",
       planned_costs: totalPlannedCosts.toFixed(2),
       actual_costs: totalActualCosts.toFixed(2),
       difference: totalDifference.toFixed(2),

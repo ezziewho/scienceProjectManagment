@@ -16,7 +16,7 @@ const ExpenseFile = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    category: {
+    expense_category: {
       type: DataTypes.ENUM(
         "equipment",
         "services",

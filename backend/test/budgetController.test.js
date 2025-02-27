@@ -65,7 +65,12 @@ describe("Budget Controller", () => {
     beforeEach(() => {
       testApp = setupTestApp(
         { userId: 1 }, // Dane sesji
-        [{ path: "/expenses/:category", handler: getExpensesByCategory }] // Trasy
+        [
+          {
+            path: "/expenses/:expense_category",
+            handler: getExpensesByCategory,
+          },
+        ] // Trasy
       );
     });
 
@@ -104,9 +109,11 @@ describe("Budget Controller", () => {
       const mockExpense = { id: 1, name: "New Expense", total_cost: 100 };
       EquipmentAndSoftware.create.mockResolvedValue(mockExpense);
 
-      const response = await request(testApp)
-        .post("/expenses")
-        .send({ category: "equipment", name: "New Expense", total_cost: 100 });
+      const response = await request(testApp).post("/expenses").send({
+        expense_category: "equipment",
+        name: "New Expense",
+        total_cost: 100,
+      });
 
       expect(response.status).toBe(201);
       expect(response.body).toEqual(mockExpense);
@@ -114,7 +121,7 @@ describe("Budget Controller", () => {
 
     it("should return 400 for an invalid category", async () => {
       const response = await request(testApp).post("/expenses").send({
-        category: "invalid_category",
+        expense_category: "invalid_category",
         name: "New Expense",
         total_cost: 100,
       });
@@ -150,7 +157,7 @@ describe("Budget Controller", () => {
 */
       const response = await request(testApp)
         .post("/expenses/approve")
-        .send({ id: 1, category: "equipment" });
+        .send({ id: 1, expense_category: "equipment" });
 
       expect(response.status).toBe(200);
       expect(response.body.message).toBe("Wydatek zatwierdzony");
@@ -160,7 +167,7 @@ describe("Budget Controller", () => {
     it("should return 400 for an invalid category", async () => {
       const response = await request(testApp)
         .post("/expenses/approve")
-        .send({ id: 1, category: "invalid_category" });
+        .send({ id: 1, expense_category: "invalid_category" });
 
       expect(response.status).toBe(400);
       expect(response.body.error).toBe("Nieprawidłowa kategoria");
@@ -172,7 +179,7 @@ describe("Budget Controller", () => {
 
       const response = await request(testApp)
         .post("/expenses/approve")
-        .send({ id: 1, category: "equipment" });
+        .send({ id: 1, expense_category: "equipment" });
 
       expect(response.status).toBe(404);
       expect(response.body.error).toBe("Nie znaleziono wydatku");
@@ -191,14 +198,14 @@ describe("Budget Controller", () => {
 
     it("should return the budget summary", async () => {
       const mockSummary = [
-        { category: "EQUIPMENT", actual_costs: 200 },
-        { category: "SERVICES", actual_costs: 200 },
-        { category: "INDIRECT COSTS", actual_costs: 200 },
-        { category: "OPEN ACCESS", actual_costs: 200 },
-        { category: "SALARIES", actual_costs: 3000 }, // Poprawiona suma wynagrodzeń
-        { category: "TRAVEL", actual_costs: 200 },
-        { category: "OTHERS", actual_costs: 200 },
-        { category: "TOTAL", actual_costs: 4200 },
+        { expense_category: "EQUIPMENT", actual_costs: 200 },
+        { expense_category: "SERVICES", actual_costs: 200 },
+        { expense_category: "INDIRECT COSTS", actual_costs: 200 },
+        { expense_category: "OPEN ACCESS", actual_costs: 200 },
+        { expense_category: "SALARIES", actual_costs: 3000 }, // Poprawiona suma wynagrodzeń
+        { expense_category: "TRAVEL", actual_costs: 200 },
+        { expense_category: "OTHERS", actual_costs: 200 },
+        { expense_category: "TOTAL", actual_costs: 4200 },
       ];
       EquipmentAndSoftware.sum.mockResolvedValue(200);
       ExternalServices.sum.mockResolvedValue(200);
@@ -232,20 +239,20 @@ describe("Budget Controller", () => {
       const mockPlannedBudget = [
         {
           id: 1,
-          category: "equipment",
+          expense_category: "equipment",
           planned_costs: 100,
           actual_costs: 90,
           notes: "",
         },
         {
           id: 2,
-          category: "services",
+          expense_category: "services",
           planned_costs: 200,
           actual_costs: 180,
           notes: "",
         },
         {
-          category: "total",
+          expense_category: "total",
           planned_costs: "300.00",
           actual_costs: "270.00",
           difference: "30.00",
@@ -255,14 +262,14 @@ describe("Budget Controller", () => {
       PlannedBudget.findAll.mockResolvedValue([
         {
           id: 1,
-          category: "equipment",
+          expense_category: "equipment",
           planned_costs: 100,
           actual_costs: 90,
           notes: "",
         },
         {
           id: 2,
-          category: "services",
+          expense_category: "services",
           planned_costs: 200,
           actual_costs: 180,
           notes: "",

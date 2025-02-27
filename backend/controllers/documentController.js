@@ -15,10 +15,8 @@ import {
   Others,
 } from "../models/index.js"; // Zmienna z modelem TaskFile
 
-// Konwersja ścieżek w ESM
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
 //const __filename = __filename || __dirname; // Alternatywne podejście
 //const __dirname = path.resolve();
 
@@ -492,16 +490,17 @@ export const uploadExpenseDocument = async (req, res) => {
       return res.status(400).json({ error: "Brak pliku do przesłania." });
     }
 
-    const { expense_id, category, uploaded_by, file_description } = req.body;
+    const { expense_id, expense_category, uploaded_by, file_description } =
+      req.body;
 
-    if (!expense_id || !category || !uploaded_by) {
+    if (!expense_id || !expense_category || !uploaded_by) {
       return res.status(400).json({
         error: "Brak wymaganych danych (expense_id, category, uploaded_by).",
       });
     }
 
     console.log(
-      `📌 Przetwarzanie pliku dla expense_id: ${expense_id}, category: ${category}, uploaded_by: ${uploaded_by}`
+      `📌 Przetwarzanie pliku dla expense_id: ${expense_id}, category: ${expense_category}, uploaded_by: ${uploaded_by}`
     );
 
     let filePath = null;
@@ -550,7 +549,7 @@ export const uploadExpenseDocument = async (req, res) => {
       file_name: req.file.originalname,
       file_path: uploadedFileUrl || filePath,
       expense_id,
-      category,
+      expense_category,
       uploaded_by,
       description: file_description || null,
     });
@@ -561,7 +560,7 @@ export const uploadExpenseDocument = async (req, res) => {
         id: expenseFile.id,
         fileName: expenseFile.file_name,
         filePath: expenseFile.file_path,
-        category: expenseFile.category,
+        expense_category: expenseFile.expense_category,
         expenseId: expenseFile.expense_id,
         uploadedBy: expenseFile.uploaded_by,
         description: expenseFile.description,
