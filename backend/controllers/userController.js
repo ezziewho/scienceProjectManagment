@@ -25,6 +25,7 @@ export const getUsers = async (req, res) => {
     //console.log("Session data:", req.session); // Log sesji dla debugowania
     const userId = req.session.userId; // Pobranie userId z sesji
     const userRole = req.session.role; // Pobranie roli użytkownika z sesji
+    const userTeam = req.session.teamId;
 
     if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
@@ -33,6 +34,7 @@ export const getUsers = async (req, res) => {
     // Pobierz użytkowników
     const users = await User.findAll({
       attributes: ["id", "name", "email", "role", "position"], // Pobieramy wyłącznie potrzebne pola
+      where: { team_id: userTeam }, // Pobieramy użytkowników z tego samego zespołu
     });
 
     // Jeśli chcesz, możesz wyróżnić użytkownika w odpowiedzi

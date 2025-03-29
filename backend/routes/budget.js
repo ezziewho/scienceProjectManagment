@@ -6,6 +6,7 @@ import {
   getBudgetSummary,
   getPlannedBudget,
   editPlannedBudget,
+  updateExpense,
 } from "../controllers/budgetController.js";
 import { isAuthenticated, isAdmin } from "../middleware/authMiddleware.js";
 
@@ -16,7 +17,7 @@ router.get("/planned", isAuthenticated, getPlannedBudget);
 // Zatwierdzanie wydatku przez administratora (isAdmin)
 router.put("/approve", /*isAuthenticated, isAdmin,*/ approveExpense);
 router.get("/:expense_category", isAuthenticated, getExpensesByCategory);
-
+router.put("/update-expense", updateExpense);
 // Tworzenie nowego wydatku
 router.post("/new/create", isAuthenticated, createExpense);
 

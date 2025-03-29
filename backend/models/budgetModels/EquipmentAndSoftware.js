@@ -29,10 +29,7 @@ const EquipmentAndSoftware = sequelize.define(
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
     },
-    total_cost: {
-      type: DataTypes.DECIMAL(12, 2),
-      allowNull: true, // Zgodnie z bazą, może być NULL
-    },
+
     purchase_date: {
       type: DataTypes.DATE,
       allowNull: false,
@@ -45,9 +42,21 @@ const EquipmentAndSoftware = sequelize.define(
       type: DataTypes.ENUM("pending", "approved", "rejected"),
       defaultValue: "pending",
     },
-    approved_by: {
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true, // Może być NULL
+    },
+    total_cost: {
+      type: DataTypes.DECIMAL(12, 2),
+      allowNull: true, // Zgodnie z bazą, może być NULL
+    },
+    team_id: {
       type: DataTypes.INTEGER,
-      allowNull: true, // Może być NULL, dopóki nie zostanie zatwierdzone
+      allowNull: true, // Może być NULL, jeśli użytkownik nie jest przypisany do zespołu
+    },
+    phase: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   },
   {

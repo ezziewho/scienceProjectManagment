@@ -1,0 +1,21 @@
+config:
+  target: "http://localhost:8081" # Zmień na adres URL Twojego backendu
+  phases:
+    - duration: 30
+      arrivalRate: 10
+scenarios:
+  - flow:
+      - post:
+          url: "/budget/new/create"
+          headers:
+            Cookie: "connect.sid=s%3AcVkjY4l7zkw2X_FRyEPL5EMST_9B8KEb.ZeLvtbsv5ffxHLs0JiZJpLkEWXk49751pY9cCtdMdYE" # Wklej tutaj wartość sesji po zalogowaniu
+          json:
+            expense_category: "equipment"
+            name: "New Equipment"
+            category: "scientific_apparatus"
+            unit_price: 1000
+            quantity: 1
+            total_cost: 1000
+            purchase_date: "2025-03-07"
+            user_id: 12
+            phase: false

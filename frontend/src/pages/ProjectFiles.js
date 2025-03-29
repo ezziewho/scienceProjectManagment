@@ -52,7 +52,7 @@ const ProjectFiles = () => {
             </Link>
           </Card.Body>
         </Card>
-        {currentUser?.role === "admin" && (
+        {currentUser?.role === "manager" && (
           <Card className="budget-card">
             <Card.Body>
               <Card.Title className="budget-card-title">

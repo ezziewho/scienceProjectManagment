@@ -28,7 +28,7 @@
 }
 
 /* Nagłówek */
-h2 {
+signup-card h2 {
     font-family: "Poppins", sans-serif;
     font-size: 24px;
     font-weight: bold;
@@ -79,7 +79,7 @@ h2 {
 }
 
 .text-light {
-    color: #f8f9fa !important;
+    color: #f8f9fa;
 }
 
 /* Alerty */

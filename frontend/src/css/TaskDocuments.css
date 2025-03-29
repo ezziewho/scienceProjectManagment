@@ -134,3 +134,12 @@
     height: 16px;
 }
 
+.badge.bg-primary {
+    background-color: #007bff;
+    color: white;
+  }
+  
+  .badge.bg-success {
+    background-color: #28a745;
+    color: white;
+  }

@@ -7,7 +7,7 @@ import "../../css/DocumentAdminPanel.css"; // Import pliku CSS
 const AdminDocumentPanel = () => {
   const [view, setView] = useState("byAll"); // 'board' lub 'table'
   const { currentUser } = useAuth();
-  const isAdmin = currentUser?.role === "admin"; // Sprawdzamy, czy użytkownik to admin
+  const isAdmin = currentUser?.role === "manager"; // Sprawdzamy, czy użytkownik to admin
   return (
     <div className="kanban-background">
       {isAdmin && (

@@ -32,6 +32,14 @@ const TeamFile = sequelize.define(
       type: DataTypes.TEXT,
       allowNull: true,
     },
+    team_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true, // Może być NULL, jeśli użytkownik nie jest przypisany do zespołu
+    },
+    phase: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   },
   {
     tableName: "team_files",

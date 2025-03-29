@@ -84,7 +84,7 @@ function EditUserModal({ user, onClose, onSave }) {
                   onChange={handleInputChange}
                 >
                   <option value="user">User</option>
-                  <option value="admin">Admin</option>
+                  <option value="manager">Manager</option>
                 </select>
               </div>
               <div className="mb-3">

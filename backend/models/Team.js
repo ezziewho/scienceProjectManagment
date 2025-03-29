@@ -9,14 +9,18 @@ const Team = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    isApplicationApproved: {
+    phase: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
+    },
+    team_name: {
+      type: DataTypes.STRING(255), // Dodane pole team_name zgodnie z bazą
+      allowNull: false,
     },
   },
   {
     timestamps: true, // Adds createdAt & updatedAt fields
-    tableName: "team",
+    tableName: "teams",
   }
 );
 

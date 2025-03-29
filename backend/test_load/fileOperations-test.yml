@@ -1,0 +1,11 @@
+config:
+  target: "http://localhost:8081" # Zmień na adres URL Twojego backendu
+  phases:
+    - duration: 10
+      arrivalRate: 1
+scenarios:
+  - flow:
+      - get:
+          url: "/document/download/task/20" # Przykładowy endpoint pobierania pliku
+          headers:
+            Cookie: "connect.sid=s%3AZxZ27D4WnaLXNjCUvLmzCpWHUh94vS46.ckmora%2BOcxB7BJtZb9JakcAGITOZEDMcuf%2B1bGLatIo" # Wklej tutaj wartość sesji po zalogowaniu

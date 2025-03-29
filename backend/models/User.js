@@ -18,7 +18,7 @@ const User = sequelize.define(
       allowNull: false,
     },
     role: {
-      type: DataTypes.ENUM("admin", "user"),
+      type: DataTypes.ENUM("admin", "user", "manager"),
       defaultValue: "user", // Domyślna rola
     },
     position: {
@@ -31,6 +31,10 @@ const User = sequelize.define(
         "phd_student"
       ),
       defaultValue: "user", // Domyślna rola
+    },
+    team_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true, // Może być NULL, jeśli użytkownik nie jest przypisany do zespołu
     },
   },
   {

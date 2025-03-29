@@ -13,6 +13,25 @@
     color: #333;
 }
 
+.task-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    /* background: #28a745; */
+    clip-path: polygon(100% 0, 0 0, 100% 100%);
+}
+
+.phase-accepted::after {
+    background: #28a745;
+}
+
+.phase-prepared::after {
+    background: dodgerblue;
+}
+
 .task-card:hover {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     transform: translateY(-3px);

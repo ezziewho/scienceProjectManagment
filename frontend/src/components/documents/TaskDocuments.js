@@ -172,6 +172,21 @@ const TaskDocuments = () => {
                 >
                   <IconTrash />
                 </button>
+                <span
+                  className={`badge ${
+                    file.phase === false
+                      ? "bg-primary"
+                      : file.phase === "In Progress"
+                      ? "bg-info text-dark"
+                      : "bg-success"
+                  }`}
+                >
+                  {file.phase === false
+                    ? "Application Phase"
+                    : file.phase === true
+                    ? "Project Execution"
+                    : file.phase || "Unknown Phase"}
+                </span>
               </div>
             </li>
           ))}

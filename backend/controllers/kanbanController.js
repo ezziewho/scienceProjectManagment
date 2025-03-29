@@ -1,9 +1,11 @@
 import { Task, TaskUser, User } from "../models/index.js"; // Importuj modele zdefiniowane w Sequelize
+import { Op } from "sequelize"; // Importuj Op z Sequelize
 
 export const getTasks = async (req, res) => {
   try {
     console.log("Session data:", req.session); // Log sesji
     const userId = req.session.userId; // Pobranie userId z sesji
+    const userTeam = req.session.teamId;
 
     if (!userId) {
       return res.status(401).json({ error: "Unauthorized" });
@@ -11,6 +13,7 @@ export const getTasks = async (req, res) => {
 
     // Pobierz zadania powiązane z zalogowanym użytkownikiem
     const tasks = await Task.findAll({
+      where: { team_id: userTeam }, // Pobieramy użytkowników z tego samego zespołu
       include: [
         {
           model: User,
@@ -32,6 +35,7 @@ export const getTasks = async (req, res) => {
       description: task.description,
       stage: task.stage,
       dueDate: task.dueDate,
+      phase: task.phase,
       usersResponsible: task.Users.map((user) => user.name).join(", "),
     }));
 
@@ -74,6 +78,13 @@ export const getAllTasks = async (req, res) => {
 */
 export const getAllTasks = async (req, res) => {
   try {
+    console.log("Sesja użytkownika:", req.session); // 👀 Sprawdzenie, co zawiera sesja
+    const userTeam = req.session.teamId;
+    if (!userTeam) {
+      return res
+        .status(401)
+        .json({ error: "User is not authenticated or teamId is missing" });
+    }
     const { title, stage, dueDate, assignedUser } = req.query;
     const whereCondition = {};
     if (title) {
@@ -85,8 +96,11 @@ export const getAllTasks = async (req, res) => {
     if (dueDate) {
       whereCondition.dueDate = dueDate;
     }
+
+    const finalWhere = { ...whereCondition, team_id: userTeam };
+
     const tasks = await Task.findAll({
-      where: whereCondition,
+      where: finalWhere,
       include: assignedUser
         ? [
             {
@@ -108,9 +122,10 @@ export const getAllTasks = async (req, res) => {
       description: task.description,
       stage: task.stage,
       dueDate: task.dueDate,
+      phase: task.phase,
       usersResponsible: task.Users.map((user) => user.name).join(", "),
     }));
-
+    console.log("formattedTasks", formattedTasks);
     res.json(formattedTasks);
   } catch (error) {
     console.error("Error fetching tasks:", error);

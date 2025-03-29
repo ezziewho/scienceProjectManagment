@@ -96,7 +96,7 @@ function Team() {
     <div className="team-container">
       <h1 className="team-title">
         Team Members
-        {currentUser?.role === "admin" && (
+        {currentUser?.role === "manager" && (
           <>
             <button
               className="btn btn-sm btn-success ms-3"
@@ -118,9 +118,9 @@ function Team() {
       <div className="members-list">
         {teamMembers.map((member) => (
           <div key={member.id} className="member-card">
-            {member.role === "admin" && (
+            {member.role === "manager" && (
               <div className="role-badge-box">
-                <span className="role-badge">ADMIN</span>
+                <span className="role-badge">MANAGER</span>
               </div>
             )}
             <h4>{member.name}</h4>
@@ -129,7 +129,7 @@ function Team() {
             </p>
 
             <p>{member.email}</p>
-            {currentUser?.role === "admin" && (
+            {currentUser?.role === "manager" && (
               <div className="member-actions">
                 <button
                   className="btn btn-sm btn-primary"

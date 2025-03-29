@@ -1,0 +1,12 @@
+config:
+  target: "http://localhost:8081" # Zmień na adres URL Twojego backendu
+  phases:
+    - duration: 60
+      arrivalRate: 10
+scenarios:
+  - flow:
+      - get:
+          url: "/kanban/tasks/all"
+          headers:
+            Cookie: "connect.sid=s%3A_EvDcQuyvlJFSMsiJLxtPbfAKdo5KhGb.Bbz%2F0WHb%2FA72EYWkHj%2BpO%2FOt41EXO%2B7m4AaKpwMriac" # Wklej tutaj wartość sesji po zalogowaniu
+

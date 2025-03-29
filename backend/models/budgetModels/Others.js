@@ -1,37 +1,49 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../../config/db_sequelize.js";
 
-const Others = sequelize.define("Others", {
+const Others = sequelize.define(
+  "Others",
+  {
     id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
     user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    name: {
+      type: DataTypes.STRING(255),
+      allowNull: false,
     },
     description: {
-        type: DataTypes.TEXT,
-        allowNull: true, // Może być NULL
+      type: DataTypes.TEXT,
+      allowNull: true, // Może być NULL
     },
     total_cost: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
     },
     status: {
-        type: DataTypes.ENUM("pending", "approved", "rejected"),
-        defaultValue: "pending",
+      type: DataTypes.ENUM("pending", "approved", "rejected"),
+      defaultValue: "pending",
     },
-    approved_by: {
-        type: DataTypes.INTEGER,
-        allowNull: true, // Może być NULL, jeśli jeszcze niezatwierdzone
+    team_id: {
+      type: DataTypes.INTEGER,
+      allowNull: true, // Może być NULL, jeśli użytkownik nie jest przypisany do zespołu
     },
-}, {
+    phase: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+  },
+  {
     tableName: "others",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: "updated_at",
-});
+  }
+);
 
 export default Others;

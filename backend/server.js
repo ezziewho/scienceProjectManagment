@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import sessionConfig from "./config/session.js";
 import authRoutes from "./routes/auth.js";
+import teamRoutes from "./routes/team.js";
 
 import userRoutes from "./routes/user.js";
 import kanbanRoutes from "./routes/kanban.js";
@@ -40,6 +41,7 @@ app.use("/notifications", notificationRoutes);
 app.use("/leave", leaveRoutes);
 app.use("/budget", budgetRoutes);
 app.use("/document", documentRoutes);
+app.use("/team", teamRoutes);
 // Synchronize Sequelize models
 const syncSequelize = async () => {
   try {

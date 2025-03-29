@@ -9,6 +9,7 @@ import {
 } from "react-bootstrap";
 import { useAuth } from "../hooks/AuthContext";
 import { fetchUserById } from "../services/userService";
+import { fetchTeamInfo, changeProjectPhase } from "../services/teamService";
 import { fetchUserLeaves, deleteLeave } from "../services/leaveService";
 import EditProfileModal from "../components/modals/EditProfileModal";
 import RequestLeaveModal from "../components/modals/RequestLeaveModal";
@@ -22,17 +23,19 @@ import "../css/Profile.css";
 function Profile() {
   const { currentUser } = useAuth();
   const [userData, setUserData] = useState(null);
+  const [teamData, setTeamData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [leaveRequests, setLeaveRequests] = useState([]);
   const [leaveLoading, setLeaveLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
   const [notifLoading, setNotifLoading] = useState(true);
+  const [position, setPosition] = useState("PI");
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  let position = "PI";
+
   useEffect(() => {
     const getUserData = async () => {
       if (!currentUser?.id) return;
@@ -58,6 +61,18 @@ function Profile() {
       }
     };
 
+    const getTeamData = async () => {
+      try {
+        const team = await fetchTeamInfo();
+        setTeamData(team);
+        if (team) {
+          setPosition(team.position);
+        }
+      } catch (err) {
+        console.error("Error fetching team data:", err);
+      }
+    };
+
     const getUserNotifications = async () => {
       if (!currentUser?.id) return;
       try {
@@ -69,6 +84,8 @@ function Profile() {
         setNotifLoading(false);
       }
     };
+
+    getTeamData();
     getUserData();
     getUserLeaves();
     getUserNotifications();
@@ -86,6 +103,7 @@ function Profile() {
       console.error("Error deleting leave request:", error);
     }
   };
+
   const handleMarkAsRead = async (notifId) => {
     try {
       await markNotificationAsRead(notifId);
@@ -94,6 +112,18 @@ function Profile() {
       console.error("Error marking notification as read:", error);
     }
   };
+
+  const handleChangeProjectPhase = async () => {
+    try {
+      await changeProjectPhase();
+      // Optionally, you can refetch the team data to update the UI
+      const updatedTeam = await fetchTeamInfo();
+      setTeamData(updatedTeam);
+    } catch (error) {
+      console.error("Error changing project phase:", error);
+    }
+  };
+
   if (loading) {
     return (
       <Container className="profile-background">
@@ -113,6 +143,35 @@ function Profile() {
   return (
     <div className="profile-background">
       <Container className="profile-container">
+        {/* Add this line to display "HAJ" */}
+        <Card className="team-card">
+          <Card.Body>
+            <div className="checing-team">
+              <h3 className="mb-4">
+                Team: <strong>{teamData?.team_name}</strong>
+                <p> </p>
+                Project phase:{" "}
+                <strong>
+                  {teamData?.phase === true
+                    ? "Project Execution"
+                    : "Application Preparation"}{" "}
+                </strong>
+                <p> </p>
+              </h3>
+            </div>
+            {teamData?.phase === false && (
+              <Button
+                variant="primary"
+                className="btn-profile w-100 mb-2"
+                onClick={handleChangeProjectPhase}
+              >
+                Application Approved
+              </Button>
+            )}
+          </Card.Body>
+        </Card>
+        <p></p>
+        <p></p>
         <div className="profile-grid">
           {/* 🟡 BOX 1: DANE O PROFILU */}
           <Card className="profile-card">
@@ -209,7 +268,6 @@ function Profile() {
             </Card.Body>
           </Card>
 
-          {/* 🟣 BOX 3: POWIADOMIENIA */}
           {/* 🟣 BOX 3: POWIADOMIENIA */}
           <Card className="profile-card leave-card">
             <Card.Body className="d-flex flex-column">

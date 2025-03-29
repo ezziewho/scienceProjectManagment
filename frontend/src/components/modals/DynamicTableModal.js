@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "../../css/DynamicTableModal.css";
 import { IconEdit, IconTrash, IconCheck, IconX } from "@tabler/icons-react";
-
+import EditRowModal from "./EditRowModal"; // Import the new modal
 const DynamicTableModal = ({
   title,
   data,
@@ -15,6 +15,7 @@ const DynamicTableModal = ({
 }) => {
   const [filters, setFilters] = useState({});
   const [userNames, setUserNames] = useState({});
+  const [selectedRow, setSelectedRow] = useState(null);
 
   useEffect(() => {
     const fetchUserNames = async () => {
@@ -73,6 +74,15 @@ const DynamicTableModal = ({
         row[key]?.toString().toLowerCase().includes(filters[key].toLowerCase())
     )
   );
+
+  const handleEditRow = (row) => {
+    setSelectedRow(row);
+  };
+
+  const handleUpdateRow = (updatedRow) => {
+    refreshData(); // Refresh data after update
+    setSelectedRow(null); // Close modal
+  };
 
   const hiddenColumns = ["id", "created_at", "updated_at", "approved_by"];
 
@@ -152,7 +162,8 @@ const DynamicTableModal = ({
                       </button>
                       <button
                         className="icon-btn edit-btn me-2"
-                        onClick={() => onEdit(row)}
+                        // onClick={() => onEdit(row)}
+                        onClick={() => handleEditRow(row)}
                       >
                         <IconEdit size={16} />
                       </button>
@@ -172,6 +183,15 @@ const DynamicTableModal = ({
           <p style={{ textAlign: "center", fontStyle: "italic" }}>
             No data available.
           </p>
+        )}
+
+        {selectedRow && (
+          <EditRowModal
+            row={selectedRow}
+            tableCategory={title.toLowerCase()}
+            onClose={() => setSelectedRow(null)}
+            onUpdate={handleUpdateRow}
+          />
         )}
       </div>
     </div>

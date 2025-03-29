@@ -5,6 +5,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column; /* Add this line to center the text vertically */
 }
 
 /* Układ kart */
@@ -20,10 +21,23 @@
     display: flex;
     justify-content: center; /* Wyśrodkowanie poziome */
     align-items: center; /* Wyśrodkowanie pionowe */
+    flex-direction: column; /* Add this line to center the text vertically */
     min-height: 100vh;
     width: 170%;
     padding: 20px;
 
+}
+
+.checing-team {
+    display: flex;
+    justify-content: center; /* Wyśrodkowanie poziome */
+    align-items: center; /* Wyśrodkowanie pionowe */
+    font-family: "Poppins", sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ffc107; /* Złoty kolor */
 }
 /* Karta profilu */
 .profile-card {
@@ -33,6 +47,15 @@
     padding: 25px;
     min-height: 450px;
     width: 100%; /* 🟡 Boxy zajmują pełną szerokość w gridzie */
+}
+
+.team-card {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 18px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 25px;
+    min-height: 5px;
+    width: 70%; /* 🟡 Boxy zajmują pełną szerokość w gridzie */
 }
 
 /* Stylizacja przycisków */

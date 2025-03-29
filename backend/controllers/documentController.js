@@ -15,6 +15,8 @@ import {
   Others,
 } from "../models/index.js"; // Zmienna z modelem TaskFile
 
+import { pipeline } from "stream";
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 //const __filename = __filename || __dirname; // Alternatywne podejście
@@ -27,8 +29,7 @@ const fileModels = {
   team_files: TeamFile,
   expense_files: ExpenseFile,
 };
-// 🚀 Przesyłanie pliku do Google Drive
-// 🚀 Przesyłanie pliku do Google Drive i zapisywanie w bazie
+/*
 export const uploadDocument = async (req, res) => {
   try {
     if (!req.file) {
@@ -55,6 +56,57 @@ export const uploadDocument = async (req, res) => {
     });
 
     fs.unlinkSync(filePath); // Usuwamy plik lokalny po przesłaniu
+
+    res.json({
+      message: "Plik przesłany do Google Drive!",
+      fileId: driveResponse.data.id,
+      fileUrl: driveResponse.data.webViewLink,
+    });
+  } catch (error) {
+    console.error("Błąd przesyłania pliku:", error);
+    res.status(500).json({ error: "Błąd przesyłania pliku do Google Drive." });
+  }
+};*/
+
+export const uploadDocument = async (req, res) => {
+  try {
+    console.log("Rozpoczęto przesyłanie pliku...");
+
+    if (!req.file) {
+      console.warn("Brak pliku do przesłania.");
+      return res.status(400).json({ error: "Brak pliku do przesłania." });
+    }
+
+    console.log(
+      `Plik otrzymany: ${req.file.originalname}, typ: ${req.file.mimetype}`
+    );
+
+    const filePath = path.join(__dirname, "../uploads", req.file.filename);
+    console.log(`Lokalizacja pliku: ${filePath}`);
+
+    const fileMetadata = {
+      name: req.file.originalname,
+      parents: [GOOGLE_DRIVE_FOLDER_ID],
+    };
+
+    const media = {
+      mimeType: req.file.mimetype,
+      body: fs.createReadStream(filePath),
+    };
+
+    console.log("Przesyłanie pliku do Google Drive...");
+    const driveResponse = await drive.files.create({
+      resource: fileMetadata,
+      media,
+      fields: "id, webViewLink",
+    });
+
+    console.log(
+      `Plik przesłany! ID: ${driveResponse.data.id}, URL: ${driveResponse.data.webViewLink}`
+    );
+
+    fs.unlinkSync(filePath); // Usuwamy plik lokalny po przesłaniu
+    console.log("Plik lokalny usunięty.");
 
     res.json({
       message: "Plik przesłany do Google Drive!",
@@ -211,10 +263,11 @@ export const uploadTeamDocument = async (req, res) => {
 
 export const getTaskFiles = async (req, res) => {
   try {
+    const userTeam = req.session.teamId;
     const { taskId } = req.params;
 
     const files = await TaskFile.findAll({
-      where: { task_id: taskId },
+      where: { task_id: taskId, team_id: userTeam },
     });
     console.log("wysylam...", files);
     res.json(files);
@@ -223,12 +276,14 @@ export const getTaskFiles = async (req, res) => {
     res.status(500).json({ error: "Nie udało się pobrać plików." });
   }
 };
+
 export const getTeamFiles = async (req, res) => {
   try {
+    const userTeam = req.session.teamId;
     const { userId } = req.params;
 
     const files = await TeamFile.findAll({
-      where: { user_id: userId },
+      where: { user_id: userId, team_id: userTeam },
     });
 
     res.json(files);
@@ -240,10 +295,12 @@ export const getTeamFiles = async (req, res) => {
 
 export const downloadTaskFile = async (req, res) => {
   try {
+    console.time("DB Lookup"); //MEASURING TIME
     const { fileId } = req.params;
 
     // Pobieramy plik z bazy danych na podstawie fileId
     const file = await TaskFile.findByPk(fileId);
+    console.timeEnd("DB Lookup"); //MEASURING TIME
     if (!file) {
       return res.status(404).json({ error: "Plik nie istnieje w bazie." });
     }
@@ -255,7 +312,9 @@ export const downloadTaskFile = async (req, res) => {
     };
 
     // Pobranie właściwego fileId z URL-a w bazie
+    console.time("Extract File ID"); //MEASURING TIME
     const driveFileId = extractFileId(file.file_path);
+    console.timeEnd("Extract File ID"); //MEASURING TIME
     if (!driveFileId) {
       return res
         .status(400)
@@ -263,10 +322,12 @@ export const downloadTaskFile = async (req, res) => {
     }
 
     // Pobranie pliku jako strumień z Google Drive
+    console.time("Google Drive Request"); //MEASURING TIME
     const driveFile = await drive.files.get(
       { fileId: driveFileId, alt: "media" },
       { responseType: "stream" }
     );
+    console.timeEnd("Google Drive Request"); //MEASURING TIME
 
     // Ustawienie odpowiednich nagłówków
     res.setHeader("Content-Type", driveFile.headers["content-type"]);
@@ -276,7 +337,9 @@ export const downloadTaskFile = async (req, res) => {
     );
 
     // Przesyłanie pliku do użytkownika
+    console.time("Stream Transfer"); //MEASURING TIME
     driveFile.data.pipe(res);
+    console.timeEnd("Stream Transfer"); //MEASURING TIME
   } catch (error) {
     console.error("Błąd pobierania pliku:", error);
 
@@ -458,6 +521,7 @@ export const getExpenseModels = async (req, res) => {
 
 export const getExpenseFiles = async (req, res) => {
   try {
+    const userTeam = req.session.teamId;
     const { category, expense_id } = req.params;
 
     console.log(
@@ -471,7 +535,7 @@ export const getExpenseFiles = async (req, res) => {
     }
 
     const files = await ExpenseFile.findAll({
-      where: { expense_id, category },
+      where: { expense_id, category, team_id: userTeam },
     });
 
     res.status(200).json({ files });

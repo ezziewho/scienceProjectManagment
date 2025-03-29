@@ -14,6 +14,7 @@ const TaskTable = () => {
     stage: "",
     dueDate: "",
     responsibleUsers: "",
+    phase: "",
   });
 
   const [loading, setLoading] = useState(true); // Stan ładowania danych
@@ -34,10 +35,12 @@ const TaskTable = () => {
         withCredentials: true,
       })
       .then((response) => {
+        console.log("Otrzymane dane z API:", response.data);
         setTasks(response.data);
         setLoading(false);
       })
       .catch((err) => {
+        console.error(err);
         console.error(err);
         setError("Failed to load tasks.");
         setLoading(false);
@@ -124,6 +127,7 @@ const TaskTable = () => {
               <th>Stage</th>
               <th>Due Date</th>
               <th>Responsible Users</th>
+              <th>Project Phase</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -165,6 +169,23 @@ const TaskTable = () => {
                         {user}
                       </span>
                     ))}
+                  </td>
+                  <td>
+                    <span
+                      className={`badge ${
+                        task.phase === false
+                          ? "bg-primary"
+                          : task.phase === "In Progress"
+                          ? "bg-info text-dark"
+                          : "bg-success"
+                      }`}
+                    >
+                      {task.phase === false
+                        ? "Application Phase"
+                        : task.phase === true
+                        ? "Project Execution"
+                        : task.phase || "Unknown Phase"}
+                    </span>
                   </td>
                   <td>
                     <button

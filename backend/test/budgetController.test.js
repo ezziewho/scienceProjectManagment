@@ -8,6 +8,7 @@ import {
   getBudgetSummary,
   getPlannedBudget,
   editPlannedBudget,
+  updateExpense,
 } from "../controllers/budgetController.js";
 import {
   EquipmentAndSoftware,
@@ -42,7 +43,7 @@ const setupTestApp = (sessionData = {}, routes = []) => {
   // Dynamiczne ustawienie sesji
   testApp.use((req, res, next) => {
     Object.assign(req.session, sessionData); // ✅ Bezpośrednio nadpisujemy `req.session`
-    console.log("✅ Mock Session Data:", req.session);
+    //console.log("✅ Mock Session Data:", req.session);
     next();
   });
 
@@ -136,7 +137,7 @@ describe("Budget Controller", () => {
 
     beforeEach(() => {
       testApp = setupTestApp(
-        { userId: 1, role: "admin" }, // Dane sesji
+        { userId: 1, role: "manager" }, // Dane sesji
         [{ path: "/expenses/approve", handler: approveExpense, method: "post" }] // Trasy
       );
     });
@@ -148,7 +149,7 @@ describe("Budget Controller", () => {
         status: "pending",
         save: jest.fn().mockResolvedValue(),
       };
-      User.findByPk.mockResolvedValue({ id: 1, role: "admin" });
+      User.findByPk.mockResolvedValue({ id: 1, role: "manager" });
       EquipmentAndSoftware.findByPk.mockResolvedValue(mockExpense);
       /*
       EquipmentAndSoftware.prototype.save = jest
@@ -338,6 +339,63 @@ describe("Budget Controller", () => {
 
       expect(response.status).toBe(404);
       expect(response.body.message).toBe("Budget entry not found");
+    });
+  });
+
+  // Dodajemy nową sekcję dla `updateExpense`
+  describe("updateExpense", () => {
+    let testApp;
+
+    beforeEach(() => {
+      testApp = setupTestApp(
+        { userId: 1 }, // Dane sesji
+        [{ path: "/update-expense", handler: updateExpense, method: "put" }] // Trasy
+      );
+    });
+
+    it("should update an existing expense for a valid category", async () => {
+      const mockExpense = {
+        expense_category: "equipment",
+        id: 1,
+        name: "Updated Expense",
+        total_cost: 150,
+        update: jest.fn().mockResolvedValue(true),
+      };
+      EquipmentAndSoftware.findByPk.mockResolvedValue(mockExpense);
+
+      const response = await request(testApp).put("/update-expense").send({
+        id: 1,
+        expense_category: "equipment",
+        name: "Updated Expense",
+        total_cost: 150,
+      });
+
+      expect(response.status).toBe(200);
+      expect(response.body.message).toBe("Wydatek zaktualizowany");
+    });
+
+    it("should return 400 for an invalid category", async () => {
+      const response = await request(testApp).put("/expenses/update").send({
+        id: 1,
+        expense_category: "invalid_category",
+        name: "Updated Expense",
+        total_cost: 150,
+      });
+
+      expect(response.status).toBe(404);
+    });
+
+    it("should return 404 if expense is not found", async () => {
+      EquipmentAndSoftware.findByPk.mockResolvedValue(null);
+
+      const response = await request(testApp).put("/expenses/update").send({
+        id: 1,
+        expense_category: "equipment",
+        name: "Updated Expense",
+        total_cost: 150,
+      });
+
+      expect(response.status).toBe(404);
     });
   });
 });

@@ -10,7 +10,7 @@ const KanbanPage = () => {
   const { currentUser } = useAuth();
   const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
 
-  const isAdmin = currentUser?.role === "admin"; // Sprawdzamy, czy użytkownik to admin
+  const isAdmin = currentUser?.role === "manager"; // Sprawdzamy, czy użytkownik to admin
 
   return (
     <div className="kanban-background">
