@@ -1,14 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Card, Button, Container } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import "../css/BudgetManagment.css"; // Import pliku CSS
 import { useAuth } from "../hooks/AuthContext"; // Import useAuth to get user data
 
 const ProjectFiles = () => {
   const { currentUser } = useAuth(); // Get current user info
   return (
-    <Container className="budget-container">
-      <h2 className="budget-title">Project Files</h2>
+    <div className="budget-container">
+      <h1 className="budget-title">Project Files</h1>
 
       <div className="budget-card-container">
         <Card className="budget-card">
@@ -68,7 +68,7 @@ const ProjectFiles = () => {
           </Card>
         )}
       </div>
-    </Container>
+    </div>
   );
 };
 

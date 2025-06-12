@@ -102,7 +102,7 @@ const AdminLeavePanel = () => {
 
   return (
     <div className="leave-container">
-      <h2 className="leave-title">Leave Management</h2>
+      <h1 className="leave-title">Leave Management</h1>
 
       {/* Filtry */}
       <div className="filters">

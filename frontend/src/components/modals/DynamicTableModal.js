@@ -68,11 +68,40 @@ const DynamicTableModal = ({
   };
 
   const filteredData = data.filter((row) =>
-    Object.keys(filters).every(
-      (key) =>
-        !filters[key] ||
-        row[key]?.toString().toLowerCase().includes(filters[key].toLowerCase())
-    )
+    Object.keys(filters).every((key) => {
+      if (!filters[key]) return true; // Skip if no filter is applied
+
+      const value = row[key];
+      const filterValue = filters[key];
+
+      // Handle date filters
+      if (
+        [
+          "submission_date",
+          "publication_date",
+          "created_at",
+          "updated_at",
+        ].includes(key)
+      ) {
+        return new Date(value).toISOString().split("T")[0] === filterValue;
+      }
+
+      // Handle boolean filters (e.g., phase)
+      if (key === "phase") {
+        return value.toString() === filterValue;
+      }
+
+      // Handle enum-like filters (e.g., status)
+      if (key === "status") {
+        return value === filterValue;
+      }
+
+      // Handle string filters
+      return value
+        ?.toString()
+        .toLowerCase()
+        .includes(filterValue.toLowerCase());
+    })
   );
 
   const handleEditRow = (row) => {
@@ -84,7 +113,13 @@ const DynamicTableModal = ({
     setSelectedRow(null); // Close modal
   };
 
-  const hiddenColumns = ["id", "created_at", "updated_at", "approved_by"];
+  const hiddenColumns = [
+    "id",
+    "created_at",
+    "updated_at",
+    "approved_by",
+    "team_id",
+  ];
 
   return (
     <div className="modal-overlay" onClick={onClose}>
@@ -98,17 +133,66 @@ const DynamicTableModal = ({
           {data.length > 0 &&
             Object.keys(data[0])
               .filter((col) => !hiddenColumns.includes(col))
-              .map((col) => (
-                <input
-                  key={col}
-                  type="text"
-                  name={col}
-                  placeholder={`Search by ${col.replace(/_/g, " ")}`}
-                  value={filters[col] || ""}
-                  onChange={handleFilterChange}
-                  className="filter-input"
-                />
-              ))}
+              .map((col) => {
+                // Determine the type of filter based on the column name or data
+                const isDateField = [
+                  "submission_date",
+                  "publication_date",
+                  "created_at",
+                  "updated_at",
+                ].includes(col);
+                const isBooleanField = col === "phase";
+                const isEnumField = col === "status";
+
+                return (
+                  <div key={col} className="filter-item">
+                    {isDateField ? (
+                      // Date filter
+                      <input
+                        type="date"
+                        name={col}
+                        value={filters[col] || ""}
+                        onChange={handleFilterChange}
+                        className="filter-input"
+                      />
+                    ) : isBooleanField ? (
+                      // Dropdown for boolean fields (e.g., phase)
+                      <select
+                        name={col}
+                        value={filters[col] || ""}
+                        onChange={handleFilterChange}
+                        className="filter-select"
+                      >
+                        <option value="">All Phases</option>
+                        <option value="false">Application Phase</option>
+                        <option value="true">Project Execution</option>
+                      </select>
+                    ) : isEnumField ? (
+                      // Dropdown for enum-like fields (e.g., status)
+                      <select
+                        name={col}
+                        value={filters[col] || ""}
+                        onChange={handleFilterChange}
+                        className="filter-select"
+                      >
+                        <option value="">All Statuses</option>
+                        <option value="approved">Approved</option>
+                        <option value="pending">Pending</option>
+                      </select>
+                    ) : (
+                      // Text filter for other fields
+                      <input
+                        type="text"
+                        name={col}
+                        placeholder={`Search by ${col.replace(/_/g, " ")}`}
+                        value={filters[col] || ""}
+                        onChange={handleFilterChange}
+                        className="filter-input"
+                      />
+                    )}
+                  </div>
+                );
+              })}
         </div>
 
         {loading ? (
@@ -123,7 +207,11 @@ const DynamicTableModal = ({
                   {Object.keys(data[0])
                     .filter((col) => !hiddenColumns.includes(col))
                     .map((col) => (
-                      <th key={col}>{col.replace(/_/g, " ").toUpperCase()}</th>
+                      <th key={col}>
+                        {col === "user_id"
+                          ? "USER"
+                          : col.replace(/_/g, " ").toUpperCase()}
+                      </th>
                     ))}
                   <th>Actions</th>
                 </tr>
@@ -144,6 +232,22 @@ const DynamicTableModal = ({
                               ].toLowerCase()}`}
                             >
                               {row[col]}
+                            </span>
+                          ) : col === "phase" ? (
+                            <span
+                              className={`badge ${
+                                row[col] === false
+                                  ? "bg-primary" // Application Phase
+                                  : row[col] === true
+                                  ? "bg-success" // Project Execution
+                                  : "bg-secondary" // Unknown Phase
+                              }`}
+                            >
+                              {row[col] === false
+                                ? "Application Phase"
+                                : row[col] === true
+                                ? "Project Execution"
+                                : "Unknown Phase"}
                             </span>
                           ) : row[col] !== null ? (
                             row[col]

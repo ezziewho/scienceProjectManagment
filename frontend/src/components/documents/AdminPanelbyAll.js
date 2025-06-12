@@ -11,6 +11,7 @@ const AdminPanelByAll = () => {
   const [search, setSearch] = useState("");
   const [filterCategory, setFilterCategory] = useState("");
   const [userNames, setUserNames] = useState({});
+  const [filterPhase, setFilterPhase] = useState("");
 
   useEffect(() => {
     fetchFiles();
@@ -94,8 +95,15 @@ const AdminPanelByAll = () => {
         (file) => file.file_table_category === filterCategory
       );
     }
+
+    if (filterPhase) {
+      filtered = filtered.filter(
+        (file) => file.phase.toString() === filterPhase
+      );
+    }
+
     setFilteredFiles(filtered);
-  }, [search, filterCategory, files]);
+  }, [search, filterCategory, filterPhase, files]);
 
   return (
     <Container>
@@ -118,6 +126,16 @@ const AdminPanelByAll = () => {
           <option value="task">Task Files</option>
           <option value="team">Team Files</option>
           <option value="expense">Budget Files</option>
+        </Form.Select>
+
+        <Form.Select
+          className="mt-2"
+          value={filterPhase}
+          onChange={(e) => setFilterPhase(e.target.value)}
+        >
+          <option value="">---Select Phase---</option>
+          <option value="false">Application Phase</option>
+          <option value="true">Project Execution</option>
         </Form.Select>
       </Form>
 
@@ -142,7 +160,7 @@ const AdminPanelByAll = () => {
                 verticalAlign: "middle",
               }}
             >
-              User
+              USER
             </th>
             <th
               style={{
@@ -151,10 +169,10 @@ const AdminPanelByAll = () => {
                 verticalAlign: "middle",
               }}
             >
-              File Name
+              FILE NAME
             </th>
             <th style={{ textAlign: "center", verticalAlign: "middle" }}>
-              Category
+              CATEGORY
             </th>
             <th
               style={{
@@ -163,7 +181,7 @@ const AdminPanelByAll = () => {
                 verticalAlign: "middle",
               }}
             >
-              Description
+              DESCRIPTION
             </th>
             <th
               style={{
@@ -172,7 +190,16 @@ const AdminPanelByAll = () => {
                 width: "200px",
               }}
             >
-              Actions
+              PHASE
+            </th>
+            <th
+              style={{
+                textAlign: "center",
+                verticalAlign: "middle",
+                width: "200px",
+              }}
+            >
+              ACTIONS
             </th>
           </tr>
         </thead>
@@ -208,6 +235,23 @@ const AdminPanelByAll = () => {
                 }}
               >
                 {file.description}
+              </td>
+              <td>
+                <span
+                  className={`badge ${
+                    file.phase === false
+                      ? "bg-primary"
+                      : file.phase === "In Progress"
+                      ? "bg-info text-dark"
+                      : "bg-success"
+                  }`}
+                >
+                  {file.phase === false
+                    ? "Application Phase"
+                    : file.phase === true
+                    ? "Project Execution"
+                    : file.phase || "Unknown Phase"}
+                </span>
               </td>
 
               <td

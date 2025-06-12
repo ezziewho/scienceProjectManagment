@@ -242,7 +242,7 @@ function Signup() {
     <div className="signup-background">
       <div className="signup-container">
         <div className="signup-card">
-          <h2 className="text-center">Sign Up</h2>
+          <h1 className="text-center">Sign Up</h1>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
               <label htmlFor="name">Name</label>
@@ -290,10 +290,8 @@ function Signup() {
                   name="createTeam"
                   checked={createTeam}
                   onChange={handleCheckboxChange}
-                  //checked={showAllTasks}
-                  //onChange={(e) => setShowAllTasks(e.target.checked)}
                 />
-                Create a new team as a Principal Investigator
+                &nbsp; Create a new team as a Principal Investigator
               </label>
             </div>
             <p></p>
@@ -306,7 +304,7 @@ function Signup() {
                   onChange={handleCheckboxChange}
                   //onChange={(e) => setJoinTeam(e.target.checked)}
                 />
-                Join an existing Team
+                &nbsp; Join an existing Team
               </label>
             </div>
             {joinTeam && (

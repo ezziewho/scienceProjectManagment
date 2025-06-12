@@ -4,6 +4,7 @@ import {
   fetchPlannedBudget,
   editPlannedBudget,
   fetchExpensesByCategory,
+  fetchBudgetSummary,
 } from "../services/budgetService";
 import { IconEdit, IconCheck, IconX } from "@tabler/icons-react";
 import DynamicTableModal from "../components/modals/DynamicTableModal";
@@ -75,6 +76,10 @@ const Budget = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [filteredData, setFilteredData] = useState([]);
   const [modalLoading, setModalLoading] = useState(false);
+  const [phaseChecked, setPhaseChecked] = useState(null); // null = both, 0 = preparation, 1 = execution
+  const [budgetSummary, setBudgetSummary] = useState([]);
+
+  const [filterPhase, setFilterPhase] = useState(null); // null = both, 0 = preparation, 1 = execution
 
   useEffect(() => {
     const loadBudgetData = async () => {
@@ -129,6 +134,18 @@ const Budget = () => {
     }
   };
 
+  const handleCheckboxChange = async (phase) => {
+    const newPhaseChecked = phaseChecked === phase ? null : phase; // Toggle between phase and null
+    setPhaseChecked(newPhaseChecked);
+
+    try {
+      const summary = await fetchBudgetSummary(newPhaseChecked);
+      setBudgetSummary(summary);
+    } catch (error) {
+      console.error("Error fetching budget summary:", error);
+    }
+  };
+
   const handleCancelClick = () => {
     setEditingRow(null);
   };
@@ -151,9 +168,35 @@ const Budget = () => {
     setFilteredData([]);
   };
 
+  const filteredBudgetData = budgetData.filter((item) => {
+    if (filterPhase === null) return true; // Show all if no filter is applied
+    return item.phase === filterPhase;
+  });
+
   return (
     <div className="budget-container">
       <h1 className="budget-title">Project Budget</h1>
+
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            checked={phaseChecked === 0}
+            onChange={() => handleCheckboxChange(0)}
+          />
+          Summarize only costs added during preparation of the application
+        </label>
+      </div>
+      <div style={{ marginBottom: "10px" }}>
+        <label>
+          <input
+            type="checkbox"
+            checked={phaseChecked === 1}
+            onChange={() => handleCheckboxChange(1)}
+          />
+          Summarize only costs added during project execution
+        </label>
+      </div>
 
       {loading && <p>Loading budget data...</p>}
       {error && <p className="error">{error}</p>}
@@ -163,15 +206,15 @@ const Budget = () => {
         <thead>
           <tr>
             <th>Category</th>
-            <th>Planned Costs (PLN)</th>
-            <th>Actual Costs (PLN)</th>
-            <th>Remaining (PLN)</th>
+            <th>Planned Costs </th>
+            <th>Actual Costs </th>
+            <th>Remaining </th>
             <th>Notes</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {budgetData.map((item, index) => (
+          {filteredBudgetData.map((item, index) => (
             <tr key={item.id}>
               <td>{formatCategory(item.expense_category)}</td>
               <td>
@@ -214,7 +257,9 @@ const Budget = () => {
                 )}
               </td>
               <td>
-                {editingRow === index ? (
+                {index === budgetData.length - 1 ? ( // Check if it's the last row
+                  <span></span> // Display a placeholder or leave it empty
+                ) : editingRow === index ? (
                   <div className="button-group">
                     <button
                       className="icon-btn save-btn"

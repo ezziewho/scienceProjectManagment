@@ -3,9 +3,10 @@ import axios from "axios";
 const API_URL = "http://localhost:8081/budget"; // Endpoint backendu
 
 // Funkcja pobierająca podsumowanie budżetu
-export const fetchBudgetSummary = async () => {
+export const fetchBudgetSummary = async (phaseChecked) => {
   try {
     const response = await axios.get(`${API_URL}/summary`, {
+      params: { phase_checked: phaseChecked },
       withCredentials: true,
     });
     return response.data;

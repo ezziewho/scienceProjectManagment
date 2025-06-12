@@ -129,22 +129,23 @@ function Team() {
             </p>
 
             <p>{member.email}</p>
-            {currentUser?.role === "manager" && (
-              <div className="member-actions">
-                <button
-                  className="btn btn-sm btn-primary"
-                  onClick={() => handleEdit(member)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="btn btn-sm btn-danger"
-                  onClick={() => handleDelete(member)}
-                >
-                  Delete
-                </button>
-              </div>
-            )}
+            {currentUser?.role === "manager" &&
+              member.id !== currentUser.id && (
+                <div className="member-actions">
+                  <button
+                    className="btn btn-sm btn-primary"
+                    onClick={() => handleEdit(member)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-sm btn-danger"
+                    onClick={() => handleDelete(member)}
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
           </div>
         ))}
       </div>

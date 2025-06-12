@@ -38,6 +38,7 @@
   /* Kontener przycisków */
   .kanban-buttons-container {
     display: flex;
+    margin-bottom: 10px; /* Reduce the space below the buttons */
     justify-content: center;
     margin: 20px 0;
     gap: 10px;

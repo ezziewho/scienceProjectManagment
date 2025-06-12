@@ -20,6 +20,7 @@ const expenseModels = {
   travel: TravelCosts,
   others: Others,
 };
+import { getTeamPhase } from "../utils/teamUtils.js";
 
 // Pobieranie wydatków według kategorii
 export const getExpensesByCategory = async (req, res) => {
@@ -35,7 +36,13 @@ export const getExpensesByCategory = async (req, res) => {
 
     const expenses = await Model.findAll();
     console.log(
-      `✅ Pobranie zakończone sukcesem. Znaleziono ${expenses.length} rekordów.`
+      `✅ Pobranie zakończone sukcesem. Znaleziono ${
+        expenses.length
+      } rekordów, a one to: ${JSON.stringify(
+        expenses.map((expense) => expense.toJSON()),
+        null,
+        2
+      )}`
     );
     res.status(200).json(expenses);
   } catch (error) {
@@ -48,9 +55,29 @@ export const getExpensesByCategory = async (req, res) => {
 export const createExpense = async (req, res) => {
   try {
     const { expense_category, ...expenseData } = req.body;
+    const teamPhase = await getTeamPhase(req.session);
     console.log(
       `📌 Tworzenie nowego wydatku w kategorii: ${expense_category}, ${req.body.user_id}`
     );
+
+    // Validate required fields for the EquipmentAndSoftware model
+    if (expense_category === "equipment") {
+      const requiredFields = [
+        "name",
+        "category",
+        "unit_price",
+        "purchase_date",
+      ];
+      const missingFields = requiredFields.filter(
+        (field) => !expenseData[field]
+      );
+
+      if (missingFields.length > 0) {
+        return res.status(400).json({
+          error: `Missing required fields: ${missingFields.join(", ")}`,
+        });
+      }
+    }
 
     const Model = expenseModels[expense_category];
     if (!Model) {
@@ -58,7 +85,11 @@ export const createExpense = async (req, res) => {
       return res.status(400).json({ error: "Nieprawidłowa kategoria" });
     }
 
-    const newExpense = await Model.create(expenseData);
+    const newExpense = await Model.create({
+      ...expenseData,
+      team_id: req.session.teamId, // Add team_id from session
+      phase: teamPhase, // Add phase retrieved from getTeamPhase
+    });
     console.log(`✅ Wydatek utworzony: ${newExpense.id}`);
     res.status(201).json(newExpense);
   } catch (error) {
@@ -125,6 +156,9 @@ export const getBudgetSummary = async (req, res) => {
   try {
     console.log("📊 Pobieranie podsumowania budżetu...");
 
+    const { phase_checked } = req.query; // Get phase_checked from query params
+    console.log(`🔍 Faza do zsumowania: ${phase_checked}`);
+
     let budgetSummary = [];
 
     for (const [expense_category, Model] of Object.entries(expenseModels)) {
@@ -134,13 +168,19 @@ export const getBudgetSummary = async (req, res) => {
 
       if (expense_category === "salaries") {
         console.log("🟢 Liczenie wynagrodzeń...");
-        const salaries = await Model.findAll();
+        const salaries = await Model.findAll({
+          where:
+            phase_checked !== "both" ? { phase: phase_checked === "1" } : {},
+        });
         actualCosts = salaries.reduce((sum, salary) => {
           return sum + salary.duration_months * salary.monthly_salary;
         }, 0);
       } else {
         console.log(`🟢 Sumowanie total_costs dla ${expense_category}...`);
-        const result = await Model.sum("total_cost");
+        const result = await Model.sum("total_cost", {
+          where:
+            phase_checked !== "both" ? { phase: phase_checked === "1" } : {},
+        });
         actualCosts = result || 0; // Jeśli brak danych, zwracamy 0
       }
 
@@ -171,7 +211,7 @@ export const getBudgetSummary = async (req, res) => {
 };
 
 // Funkcja zwracająca budżet bezpośrednio (do użytku wewnętrznego)
-export const getBudgetSummaryDirectly = async () => {
+export const getBudgetSummaryDirectly = async (phaseChecked, teamId) => {
   try {
     console.log("📊 Pobieranie podsumowania budżetu (bezpośrednie)...");
 
@@ -184,13 +224,23 @@ export const getBudgetSummaryDirectly = async () => {
         console.log(
           `🟢 Liczenie wynagrodzeń dla kategorii ${expense_category}...`
         );
-        const salaries = await Model.findAll();
+        const salaries = await Model.findAll({
+          where: {
+            team_id: teamId,
+            ...(phaseChecked !== "both" ? { phase: phaseChecked === "1" } : {}),
+          },
+        });
         actualCosts = salaries.reduce((sum, salary) => {
           return sum + salary.duration_months * salary.monthly_salary;
         }, 0);
       } else {
         console.log(`🟢 Sumowanie total_costs dla ${expense_category}...`);
-        const result = await Model.sum("total_cost");
+        const result = await Model.sum("total_cost", {
+          where: {
+            team_id: teamId,
+            ...(phaseChecked !== "both" ? { phase: phaseChecked === "1" } : {}),
+          },
+        });
         actualCosts = result || 0; // Jeśli brak danych, zwracamy 0
       }
 
@@ -227,12 +277,12 @@ export const getBudgetSummaryDirectly = async () => {
 };
 
 // Aktualizacja planned_budget na podstawie actual_costs
-export const updatePlannedBudget = async () => {
+export const updatePlannedBudget = async (phaseChecked, teamId) => {
   try {
     console.log("🔄 Aktualizacja actual_costs w planned_budget...");
 
     // Pobieramy aktualne wartości actual_costs z getBudgetSummaryDirectly()
-    const budgetSummary = await getBudgetSummaryDirectly();
+    const budgetSummary = await getBudgetSummaryDirectly(phaseChecked, teamId);
 
     // Sprawdzamy, czy pobrano poprawne dane
     if (!budgetSummary || budgetSummary.length === 0) {

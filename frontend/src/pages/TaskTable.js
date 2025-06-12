@@ -45,6 +45,8 @@ const TaskTable = () => {
         setError("Failed to load tasks.");
         setLoading(false);
       });
+
+    console.log("Filters being sent to backend:", filters);
   }, [filters]);
 
   const handleFilterChange = (e) => {
@@ -90,6 +92,15 @@ const TaskTable = () => {
           <option value="In Progress">In Progress</option>
           <option value="Review">Review</option>
           <option value="Done">Done</option>
+        </select>
+        <select
+          name="phase"
+          value={filters.phase}
+          onChange={handleFilterChange}
+        >
+          <option value="">All Phases</option>
+          <option value="Application Phase">Application Phase</option>
+          <option value="Project Execution">Project Execution</option>
         </select>
         <input
           type="date"
@@ -188,18 +199,20 @@ const TaskTable = () => {
                     </span>
                   </td>
                   <td>
-                    <button
-                      className="btn btn-sm btn-primary me-2"
-                      onClick={() => handleEditClick(task)}
-                    >
-                      <IconEdit size={16} />
-                    </button>
-                    <button
-                      className="btn btn-sm btn-danger"
-                      onClick={() => handleDeleteClick(task)}
-                    >
-                      <IconTrash size={16} />
-                    </button>
+                    <div className="task-actions">
+                      <button
+                        className="btn btn-sm btn-primary me-2"
+                        onClick={() => handleEditClick(task)}
+                      >
+                        <IconEdit size={16} />
+                      </button>
+                      <button
+                        className="btn btn-sm btn-danger"
+                        onClick={() => handleDeleteClick(task)}
+                      >
+                        <IconTrash size={16} />
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))

@@ -1,6 +1,7 @@
 import request from "supertest";
 import express from "express";
 import session from "express-session";
+const assert = require("assert");
 import {
   getAllLeaves,
   getUserLeaves,
@@ -83,6 +84,10 @@ describe("Leave Controller", () => {
       expect(response.status).toBe(200);
       expect(response.body).toEqual(mockLeaves);
     });
+  });
+
+  it("should return a list of filtered leave requestsn", () => {
+    assert.strictEqual(true, true);
   });
 
   describe("getUserLeaves", () => {

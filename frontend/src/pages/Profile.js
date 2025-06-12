@@ -187,7 +187,7 @@ function Profile() {
                 <strong>Role:</strong> {userData?.role}
               </p>
               <p>
-                <strong>Position:</strong> {position}
+                <strong>Position:</strong> {position} {userData?.position} PI
               </p>
               <p>
                 <strong>Password:</strong> ●●●●●●●●●

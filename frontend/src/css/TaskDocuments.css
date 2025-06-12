@@ -143,3 +143,7 @@
     background-color: #28a745;
     color: white;
   }
+
+  .form-label {
+    color: #000; /* Set the text color to black or any visible color */
+  }

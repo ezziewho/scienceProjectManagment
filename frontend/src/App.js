@@ -22,40 +22,42 @@ import BudgetDocuments from "./components/documents/BudgetDocuments.js";
 import TeamDocuments from "./components/documents/TeamDocuments.js";
 import TaskDocuments from "./components/documents/TaskDocuments.js";
 import AdminDocumentsPanel from "./components/documents/AdminDocumentsPanel.js";
-
+import "./css/Navbar.css"; // Import CSS for Team page
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Navbar />
-        <Routes>
-          <Route path="/not-logged-in" element={<NotLoggedIn />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/signup" element={<Signup />}></Route>
-          <Route path="/ForgotPassword" element={<ForgotPassword />}></Route>
-          <Route path="/" element={<Home />}></Route>
-          <Route path="/kanban" element={<KanbanPage />} />
-          <Route path="/team" element={<Team />} />
-          <Route path="/expense" element={<BudgetManagement />} />
-          <Route path="/budget" element={<Budget />} />
-          <Route path="/projectfiles" element={<ProjectFiles />} />
-          <Route path="/admin/leaves" element={<AdminLeavePanel />} />
-          <Route path="/documents/budget" element={<BudgetDocuments />} />
-          <Route path="/documents/team" element={<TeamDocuments />} />
-          <Route path="/documents/task" element={<TaskDocuments />} />
-          <Route path="/documents/budget" element={<BudgetDocuments />} />
-          <Route
-            path="/documents/adminpanel"
-            element={<AdminDocumentsPanel />}
-          />
+        <div className="main-content">
+          <Routes>
+            <Route path="/not-logged-in" element={<NotLoggedIn />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/signup" element={<Signup />}></Route>
+            <Route path="/ForgotPassword" element={<ForgotPassword />}></Route>
+            <Route path="/" element={<Home />}></Route>
+            <Route path="/kanban" element={<KanbanPage />} />
+            <Route path="/team" element={<Team />} />
+            <Route path="/expense" element={<BudgetManagement />} />
+            <Route path="/budget" element={<Budget />} />
+            <Route path="/projectfiles" element={<ProjectFiles />} />
+            <Route path="/admin/leaves" element={<AdminLeavePanel />} />
+            <Route path="/documents/budget" element={<BudgetDocuments />} />
+            <Route path="/documents/team" element={<TeamDocuments />} />
+            <Route path="/documents/task" element={<TaskDocuments />} />
+            <Route path="/documents/budget" element={<BudgetDocuments />} />
+            <Route
+              path="/documents/adminpanel"
+              element={<AdminDocumentsPanel />}
+            />
 
-          <Route path="/expense" element={<NewExpenseLayout />}>
-            <Route path="new/:section?" element={<NewExpense />} />{" "}
-            {/* ✅ Dynamiczna sekcja */}
-          </Route>
+            <Route path="/expense" element={<NewExpenseLayout />}>
+              <Route path="new/:section?" element={<NewExpense />} />{" "}
+              {/* ✅ Dynamiczna sekcja */}
+            </Route>
 
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </div>
       </BrowserRouter>
     </AuthProvider>
   );

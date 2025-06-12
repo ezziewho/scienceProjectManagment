@@ -1,75 +1,14 @@
+import "dotenv/config"; // This automatically runs dotenv's config method
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import db from "../config/db.js";
 import nodemailer from "nodemailer";
 import { User } from "../models/index.js"; // Importuj model User
 //import { User } from "../models/User.js"; // Zakładam, że model Sequelize znajduje się w models/User.js
-import "dotenv/config"; // This automatically runs dotenv's config method
+
 import { sendEmail } from "../utils/email.js";
 import { Team } from "../models/index.js"; // Importuj model Team
 const salt = 10;
-
-/*
-
-export const signup = async (req, res) => {
-  try {
-    const { name, email, password, role, team_id, team_name } = req.body;
-
-    console.log("Received signup request with data:", req.body); // Log the incoming request data
-
-    // Check if the user already exists
-    const existingUser = await User.findOne({ where: { email } });
-    if (existingUser) {
-      return res.status(400).json({ error: "User already exists" });
-    }
-
-    // Generate a random password if not provided (for admin-initiated creation)
-    const tempPassword = password || crypto.randomBytes(8).toString("hex");
-
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(tempPassword, salt);
-
-    let assignedTeamId = null;
-
-    if (team_id) {
-      // Użytkownik dołącza do istniejącego zespołu
-      const team = await Team.findOne({ where: { id: team_id } });
-      if (!team) {
-        return res.status(400).json({ error: "Team not found" });
-      }
-      assignedTeamId = team.id;
-    } else if (team_name) {
-      // Użytkownik tworzy nowy zespół
-      const newTeam = await Team.create({ team_name: team_name });
-      assignedTeamId = newTeam.id;
-    } else {
-      return res.status(400).json({ error: "Must join or create a team" });
-    }
-
-    // Create the user in the database
-    const newUser = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-      role: role || "user", // Default role to "user" if not provided
-      position: role === "manager" ? "PI" : null, // Conditionally set position
-      team_id: assignedTeamId,
-    });
-
-    if (!password) {
-      await sendEmail(
-        email,
-        "Your New Account Password",
-        `Hello ${name},\n\nYour SCIMAN account has been created successfully. Here is your temporary password:\n\n${tempPassword}\n\nPlease log in and change your password as soon as possible.\n\nThank you!`
-      );
-    }
-    // Return success response
-    return res.status(201).json({ success: true, user: newUser });
-  } catch (error) {
-    console.error("Error in signup:", error);
-    return res.status(500).json({ error: "Error signing up user" });
-  }
-};*/
 
 export const signup = async (req, res) => {
   try {
@@ -178,11 +117,8 @@ export const login = async (req, res) => {
     // Ustawienie sesji
     req.session.userId = user.id;
     req.session.teamId = user.team_id;
-    req.session.role = user.role || "user"; // Przypisanie roli, jeśli istnieje
+    req.session.role = user.role || "user";
 
-    //console.log("Session data after login:", req.session);
-
-    // Zwrócenie odpowiedzi sukcesu
     return res.json({ Login: true });
   } catch (error) {
     //console.error("Error in login:", error);

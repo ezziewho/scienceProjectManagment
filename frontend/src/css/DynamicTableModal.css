@@ -27,8 +27,8 @@
 /* Kontener modalu */
 .modal-content {
     background: #ffffff !important; /* Pełny biały kolor */
-    width: 90%;
-    max-width: 1600px;
+    width: 100%;
+    max-width: 2000px;
     max-height: none;
     overflow-y: visible;
     padding: 20px ;
@@ -72,18 +72,20 @@
 /* Kontener tabeli - zapewnia przewijanie w poziomie */
 .table-container {
     overflow-x: auto;
-    max-width: 100%;
+    max-width: 150%;
     display: flex;
     justify-content: center;
 }
 
 
 .category-table th, .category-table td {
+    max-width: 700px; /* lub inna wartość, np. 250px */
     padding: 20px !important;
     border-bottom: 1px solid #ddd;
     text-align: left;
     word-wrap: break-word;
-    white-space: nowrap !important;
+
+    white-space: normal !important;
 
 }
 
@@ -142,6 +144,52 @@
     justify-content: center;
 }
 
+.badge.bg-success {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .badge.bg-primary {
+    background-color: #007bff;
+    color: white;
+  }
+
+/* .filter-container {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px;
+  margin-bottom: 15px;
+} */
+
+.filter-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 2fr));
+    gap: 15px;
+    margin-bottom: 25px;
+    padding: 0 10px;
+  }
+/* 
+.filter-item {
+  flex: 2;
+  min-width: 900px;
+} */
+.filter-item {
+    display: flex;
+    flex-direction: column;
+  }
+  
+
+
+.filter-input,
+.filter-select {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  transition: all 0.3s ease-in-out;
+}
+  
 /* Stylizacja ikony usunięcia */
 .delete-btn {
     background-color: #dc3545; /* Czerwony */
@@ -168,16 +216,7 @@
     justify-content: center;
   }
   
-  /* Pola wyszukiwania */
-  .filter-input {
-    padding: 8px 12px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    font-size: 14px;
-    width: 20%;
-    transition: all 0.3s ease-in-out;
-  }
-  
+
   /* Efekt focus */
   .filter-input:focus {
     outline: none;

@@ -24,6 +24,8 @@
     justify-content: center;
 }
 
+
+
 /* Stylizacja przycisku zapisu */
 .save-btn {
     background-color: #28a745; /* Zielony */
@@ -116,6 +118,22 @@
     backdrop-filter: blur(8px);
     z-index: 0;
 }
+
+/* Ensure checkboxes are above the overlay */
+.budget-container label {
+    position: relative; /* Create a new stacking context for labels */
+    z-index: 1; /* Ensure labels and checkboxes are above the overlay */
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Add spacing between checkboxes */
+}
+
+/* Optional: Style the checkboxes */
+.budget-container input[type="checkbox"] {
+    margin-right: 8px; /* Add spacing between the checkbox and label text */
+    z-index: 2; /* Ensure the checkbox itself is above the overlay */
+}
+  
 
 /* Tytuł */
 .budget-title {

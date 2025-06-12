@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Card, Button, Container } from "react-bootstrap";
+import { Card, Button } from "react-bootstrap";
 import "../../css/BudgetManagment.css"; // Import pliku CSS
 
 const BuddgetManagment = () => {
   return (
-    <Container className="budget-container">
-      <h2 className="budget-title">Budget Management</h2>
+    <div className="budget-container">
+      <h1 className="budget-title">Budget Management</h1>
 
       <div className="budget-card-container">
         <Card className="budget-card">
@@ -35,7 +35,7 @@ const BuddgetManagment = () => {
           </Card.Body>
         </Card>
       </div>
-    </Container>
+    </div>
   );
 };
 

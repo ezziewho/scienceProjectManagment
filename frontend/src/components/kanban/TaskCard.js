@@ -6,6 +6,7 @@ import {
   IconChevronUp,
 } from "@tabler/icons-react";
 import "../../css/TaskCard.css";
+import "../../css/TaskTable.css";
 
 function TaskCard({ task, isDone, isPhaseAccepted }) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -42,6 +43,11 @@ function TaskCard({ task, isDone, isPhaseAccepted }) {
       draggable
       onDragStart={handleDragStart}
     >
+      {/* Badge for the task phase */}
+      <div className={`task-badge ${taskPhaseClass}`}>
+        {isPhaseAccepted ? "Project Execution" : "Application Phase"}
+      </div>
+
       {/* Header with title and expand/collapse button */}
       <div className="task-card-header">
         <h5 className="task-card-title">{task.title}</h5>
